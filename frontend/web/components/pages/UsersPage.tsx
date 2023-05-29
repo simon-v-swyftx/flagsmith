@@ -85,7 +85,7 @@ const UsersPage: FC<UsersPageType> = (props) => {
       'New Users',
       <CreateUserModal environmentId={environmentId} />,
       null,
-      { className: 'alert fade expand' },
+      { className: 'alert overflow-y-auto fade expand' },
     )
   }
 
