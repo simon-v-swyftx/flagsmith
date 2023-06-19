@@ -23,7 +23,7 @@ class Command(BaseCommand):
                 password=settings.DEFAULT_USER_PASSWORD,
                 is_superuser=settings.DEFAULT_USER_IS_SUPERUSER,
             )
-            logger.info(
+            self.stdout.write(
                 "Created default user with email %s", settings.DEFAULT_USER_EMAIL
             )
 
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             organisation = Organisation.objects.create(
                 name=settings.DEFAULT_ORGANISATION_NAME
             )
-            logger.info(
+            self.stdout.write(
                 "Created default organisation with name %s",
                 settings.DEFAULT_ORGANISATION_NAME,
             )
@@ -43,14 +43,14 @@ class Command(BaseCommand):
             project = Project.objects.create(
                 name=settings.DEFAULT_PROJECT_NAME, organisation=organisation
             )
-            logger.info(
+            self.stdout.write(
                 "Created default project with name %s in organisation %s",
                 settings.DEFAULT_PROJECT_NAME,
                 settings.DEFAULT_ORGANISATION_NAME,
             )
 
         if user or organisation or project:
-            logger.info("Successfully initialised defaults.")
+            self.stdout.write("Successfully initialised defaults.")
 
 
 def should_create_user():
