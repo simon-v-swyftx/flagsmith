@@ -84,14 +84,14 @@ const PaymentModal = class extends Component {
                     {Utils.getFlagsmithHasFeature('annual_plans') && (
                       <div className='text-center mb-4'>
                         <Row className='justify-content-center'>
-                          <span className='mr-2'>Monthly</span>
+                          <span className='me-2'>Monthly</span>
                           <Switch
                             onMarkup=' '
                             offMarkup=' '
                             checked={this.state.yearly}
                             onChange={(yearly) => this.setState({ yearly })}
                           />
-                          <span className='ml-2'>Yearly</span>
+                          <span className='ms-2'>Yearly</span>
                         </Row>
                       </div>
                     )}

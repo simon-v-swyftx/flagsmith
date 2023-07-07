@@ -150,7 +150,7 @@ const ChangeRequestsPage = class extends Component {
                           to={`/project/${projectId}/environment/${environmentId}/scheduled-changes/${id}`}
                         >
                           <Row className='list-item clickable'>
-                            <span className='ion text-primary mr-4 icon ion-ios-timer' />
+                            <span className='ion text-primary me-4 icon ion-ios-timer' />
                             <div>
                               <Button theme='text'>{title}</Button>
                               <div className='list-item-footer faint'>

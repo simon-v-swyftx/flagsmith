@@ -119,7 +119,7 @@ const JSONReference: FC<JSONReferenceType> = ({
               <div>
                 <Row>
                   {!hideCondensedButton && (
-                    <div className='ml-2'>
+                    <div className='ms-2'>
                       <label className='text-small text-white'>Condensed</label>
                       <Switch
                         checked={condensed}
@@ -128,7 +128,7 @@ const JSONReference: FC<JSONReferenceType> = ({
                     </div>
                   )}
                   {condensed && showNamesButton && (
-                    <div className='ml-2'>
+                    <div className='ms-2'>
                       <label className='text-small text-white'>
                         Show names
                       </label>

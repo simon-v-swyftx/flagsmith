@@ -77,7 +77,7 @@ const SegmentOverride = ConfigProvider(
               <div className='flex flex-1 text-left'>
                 <strong>
                   {v.segment.name}
-                  {changed && <div className='unread ml-2 px-2'>Unsaved</div>}
+                  {changed && <div className='unread ms-2 px-2'>Unsaved</div>}
                 </strong>
               </div>
               <div>

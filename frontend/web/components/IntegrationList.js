@@ -36,7 +36,7 @@ class Integration extends Component {
         title={
           <Row style={{ flexWrap: 'noWrap' }}>
             <Flex>
-              <img width={180} className='mr-4' src={image} />
+              <img width={180} className='me-4' src={image} />
 
               <div className='subtitle mt-2'>
                 {description}{' '}
@@ -49,7 +49,7 @@ class Integration extends Component {
             </Flex>
             {showAdd && (
               <Button
-                className='btn-lg btn-primary ml-4'
+                className='btn-lg btn-primary ms-4'
                 id='show-create-segment-btn'
                 data-test='show-create-segment-btn'
                 onClick={this.add}

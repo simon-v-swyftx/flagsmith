@@ -58,7 +58,7 @@ export default class Feature extends PureComponent {
     )
     return (
       <div>
-        <FormGroup className='mb-4 mr-3 ml-3'>
+        <FormGroup className='mb-4 me-3 ms-3'>
           <div>
             <label>{enabledString || 'Enabled'}</label>
           </div>
@@ -72,7 +72,7 @@ export default class Feature extends PureComponent {
         </FormGroup>
 
         {showValue && (
-          <FormGroup className='mx-3 mb-4 mr-3'>
+          <FormGroup className='mx-3 mb-4 me-3'>
             <InputGroup
               component={
                 <ValueEditor
@@ -118,7 +118,7 @@ export default class Feature extends PureComponent {
         )}
         {!identity && (
           <div>
-            <FormGroup className='ml-3 mb-4 mr-3'>
+            <FormGroup className='ms-3 mb-4 me-3'>
               {(!!environmentVariations || !isEdit) && (
                 <VariationOptions
                   disabled={!!identity || readOnly}

@@ -51,7 +51,7 @@ const Tabs = class extends React.Component {
               >
                 {child.props.tabIcon && (
                   <span
-                    className={classNames('icon mr-2', child.props.tabIcon)}
+                    className={classNames('icon me-2', child.props.tabIcon)}
                   />
                 )}
                 {child.props.tabLabel}

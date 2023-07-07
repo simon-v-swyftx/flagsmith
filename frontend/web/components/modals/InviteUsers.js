@@ -103,7 +103,7 @@ const InviteUsers = class extends Component {
                         placeholder='Select a role'
                         value={invite.role}
                         onChange={(role) => this.onChange(index, 'role', role)}
-                        className='pl-2'
+                        className='ps-2'
                         options={_.map(Constants.roles, (label, value) => ({
                           isDisabled: value !== 'ADMIN' && !hasRbacPermission,
                           label:
@@ -120,7 +120,7 @@ const InviteUsers = class extends Component {
                           id='delete-invite'
                           type='button'
                           onClick={() => this.deleteInvite(index)}
-                          className='btn btn--with-icon ml-auto btn--remove'
+                          className='btn btn--with-icon ms-auto btn--remove'
                         >
                           <RemoveIcon />
                         </button>
@@ -144,7 +144,7 @@ const InviteUsers = class extends Component {
                     }
                   >
                     {isSaving ? 'Sending' : 'Invite additional member'}
-                    <span className='pl-2 icon ion-ios-add' />
+                    <span className='ps-2 icon ion-ios-add' />
                   </Button>
                 </div>
 
@@ -163,7 +163,7 @@ const InviteUsers = class extends Component {
               </div>
               <ModalHR />
               <div className='modal-footer'>
-                <Button onClick={closeModal} className='mr-2' theme='secondary'>
+                <Button onClick={closeModal} className='me-2' theme='secondary'>
                   Cancel
                 </Button>
                 <Button

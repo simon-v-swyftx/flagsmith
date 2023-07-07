@@ -132,13 +132,13 @@ const AddEditTags: FC<AddEditTagsType> = ({
                         <>
                           <div
                             onClick={() => editTag(tag)}
-                            className='ml-2 px-2 clickable'
+                            className='ms-2 px-2 clickable'
                           >
                             <span className='icon ion-md-settings' />
                           </div>
                           <div
                             onClick={() => confirmDeleteTag(tag)}
-                            className='ml-2 px-2 clickable'
+                            className='ms-2 px-2 clickable'
                           >
                             <img
                               width={16}

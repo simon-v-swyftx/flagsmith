@@ -26,7 +26,7 @@ const TagValues: FC<TagValuesType> = ({
             <Tag
               hideNames={hideNames}
               onClick={onAdd}
-              className='px-2 py-2 mr-2'
+              className='px-2 py-2 me-2'
               tag={tag}
             />
           ),

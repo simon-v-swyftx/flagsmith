@@ -327,7 +327,7 @@ const FeatureList = class extends Component<FeatureListType> {
                                             )
                                           }}
                                         >
-                                          <div className='mr-2'>
+                                          <div className='me-2'>
                                             <Tag
                                               selected={this.state.showArchived}
                                               onClick={() => {
@@ -341,7 +341,7 @@ const FeatureList = class extends Component<FeatureListType> {
                                                   this.filter,
                                                 )
                                               }}
-                                              className='px-2 py-2 ml-2 mr-2'
+                                              className='px-2 py-2 ms-2 me-2'
                                               tag={{ label: 'Archived' }}
                                             />
                                           </div>

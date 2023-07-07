@@ -323,10 +323,10 @@ const ChangeRequestsPage = class extends Component {
                 className='app-container container-fluid'
               >
                 <Row>
-                  <Flex className='mb-2 ml-3'>
+                  <Flex className='mb-2 ms-3'>
                     <Row>
                       <Flex>
-                        <h3 className='ml-0'>{changeRequest.title}</h3>
+                        <h3 className='ms-0'>{changeRequest.title}</h3>
                       </Flex>
                     </Row>
                     <div className='list-item-footer faint'>
@@ -339,7 +339,7 @@ const ChangeRequestsPage = class extends Component {
                     </div>
                     <p className='mt-2'>{changeRequest.description}</p>
                   </Flex>
-                  <div className='mr-4'>
+                  <div className='me-4'>
                     {(!committedBy || !committedBy.id || isScheduled) && (
                       <Row>
                         <Button
@@ -353,7 +353,7 @@ const ChangeRequestsPage = class extends Component {
                           onClick={() =>
                             this.editChangeRequest(projectFlag, environmentFlag)
                           }
-                          className='ml-2'
+                          className='ms-2'
                           size='small'
                         >
                           Edit
@@ -587,14 +587,14 @@ const ChangeRequestsPage = class extends Component {
                         }}
                       >
                         <strong style={{ width: labelWidth }}>Value</strong>
-                        <Flex className='mr-2'>
+                        <Flex className='me-2'>
                           {!changeRequest.committed_at && (
                             <ValueEditor
                               value={Utils.getTypedValue(oldValue)}
                             />
                           )}
                         </Flex>
-                        <Flex className='ml-2'>
+                        <Flex className='ms-2'>
                           <ValueEditor value={newValue} />
                         </Flex>
                       </Row>
@@ -613,7 +613,7 @@ const ChangeRequestsPage = class extends Component {
                           <strong style={{ width: labelWidth }}>
                             Variations
                           </strong>
-                          <Flex className='mr-2'>
+                          <Flex className='me-2'>
                             {mvData.map((v, i) => (
                               <div
                                 key={i}
@@ -635,13 +635,13 @@ const ChangeRequestsPage = class extends Component {
                                   </Row>
                                 </div>
                                 <Row>
-                                  <Flex className='ml-4'>
+                                  <Flex className='ms-4'>
                                     <span>
                                       Environment weight:{' '}
                                       <strong>{v.oldValue}%</strong>
                                     </span>
                                   </Flex>
-                                  <Flex className='mr-4'>
+                                  <Flex className='me-4'>
                                     <span>
                                       Environment weight:{' '}
                                       <strong>{v.newValue}%</strong>
@@ -660,14 +660,14 @@ const ChangeRequestsPage = class extends Component {
                         <Flex />
                         <Flex>
                           {approvedBy.length ? (
-                            <div className='text-right mb-2 mr-2'>
-                              <span className='ion icon-primary text-primary icon ion-md-checkbox mr-2' />
+                            <div className='text-right mb-2 me-2'>
+                              <span className='ion icon-primary text-primary icon ion-md-checkbox me-2' />
                               Approved by {approvedBy.join(', ')}
                             </div>
                           ) : (
                             !!minApprovals && (
-                              <div className='text-right mb-2 mr-2'>
-                                <span className='ion icon-primary text-primary icon ion-ios-information-circle mr-2' />
+                              <div className='text-right mb-2 me-2'>
+                                <span className='ion icon-primary text-primary icon ion-ios-information-circle me-2' />
                                 You need at least {minApprovals} approval
                                 {minApprovals !== 1 ? 's' : ''} to{' '}
                                 {isScheduled ? 'schedule' : 'publish'} this
@@ -678,7 +678,7 @@ const ChangeRequestsPage = class extends Component {
 
                           {changeRequest.committed_at ? (
                             <div className='text-right'>
-                              <span className='ion icon-primary text-primary icon ion-ios-git-merge mr-2' />
+                              <span className='ion icon-primary text-primary icon ion-ios-git-merge me-2' />
                               Committed at{' '}
                               {moment(changeRequest.committed_at).format(
                                 'Do MMM YYYY HH:mma',
@@ -687,7 +687,7 @@ const ChangeRequestsPage = class extends Component {
                               {committedBy.last_name}
                             </div>
                           ) : (
-                            <Row className='text-right mr-2'>
+                            <Row className='text-right me-2'>
                               <Flex />
                               {!isYourChangeRequest &&
                                 Utils.renderWithPermission(
@@ -700,7 +700,7 @@ const ChangeRequestsPage = class extends Component {
                                     onClick={this.approveChangeRequest}
                                     className='btn'
                                   >
-                                    <span className='ion icon ion-md-checkbox text-light mr-2' />
+                                    <span className='ion icon ion-md-checkbox text-light me-2' />
                                     {approved ? 'Approved' : 'Approve'}
                                   </Button>,
                                 )}
@@ -717,7 +717,7 @@ const ChangeRequestsPage = class extends Component {
                                   onClick={this.publishChangeRequest}
                                   className='btn ml-2'
                                 >
-                                  <span className='ion icon ion-ios-git-merge text-light mr-2' />
+                                  <span className='ion icon ion-ios-git-merge text-light me-2' />
                                   {isScheduled
                                     ? 'Publish Scheduled'
                                     : 'Publish'}{' '}

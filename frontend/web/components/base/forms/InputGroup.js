@@ -43,7 +43,7 @@ const InputGroup = class extends Component {
         ) : (
           <Row>
             {!!props.title && (
-              <Flex className='mr-4'>
+              <Flex className='me-4'>
                 <label htmlFor={id} className='cols-sm-2 control-label'>
                   <div>
                     {props.title}{' '}

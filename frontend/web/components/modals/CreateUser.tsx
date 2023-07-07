@@ -48,7 +48,7 @@ const CreateUser: FC<CreateUserType> = ({ environmentId }) => {
       </div>
       <ModalHR />
       <div className='modal-footer'>
-        <Button className='mr-2' onClick={closeModal} theme='secondary'>
+        <Button className='me-2' onClick={closeModal} theme='secondary'>
           Cancel
         </Button>
         <Button onClick={submit} disabled={!value?.length}>

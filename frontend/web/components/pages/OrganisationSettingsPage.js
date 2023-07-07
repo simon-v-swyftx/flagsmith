@@ -318,7 +318,7 @@ const OrganisationSettingsPage = class extends Component {
                                 >
                                   <h5>Organisation Name</h5>
                                   <Row>
-                                    <Column className='ml-0'>
+                                    <Column className='ms-0'>
                                       <Input
                                         ref={(e) => (this.input = e)}
                                         data-test='organisation-name'
@@ -391,7 +391,7 @@ const OrganisationSettingsPage = class extends Component {
                                     <div>
                                       {organisation.subscription && (
                                         <a
-                                          className='btn btn-primary mr-2'
+                                          className='btn btn-primary me-2'
                                           href='https://flagsmith.chargebeeportal.com/'
                                           target='_blank'
                                           rel='noreferrer'
@@ -405,7 +405,7 @@ const OrganisationSettingsPage = class extends Component {
                                             !this.state.manageSubscriptionLoaded
                                           }
                                           type='button'
-                                          className='btn btn-primary text-center ml-auto mt-2 mb-2'
+                                          className='btn btn-primary text-center ms-auto mt-2 mb-2'
                                           onClick={() => {
                                             if (this.state.chargebeeURL) {
                                               window.location =
@@ -426,7 +426,7 @@ const OrganisationSettingsPage = class extends Component {
                                       ) : (
                                         <button
                                           type='button'
-                                          className='btn btn-primary text-center ml-auto mt-2 mb-2'
+                                          className='btn btn-primary text-center ms-auto mt-2 mb-2'
                                           onClick={() =>
                                             openModal(
                                               'Payment Plans',
@@ -517,7 +517,7 @@ const OrganisationSettingsPage = class extends Component {
                                       deleteOrganisation()
                                     })
                                   }
-                                  className='btn btn--with-icon ml-auto btn--remove'
+                                  className='btn btn--with-icon ms-auto btn--remove'
                                 >
                                   <RemoveIcon />
                                 </Button>
@@ -685,7 +685,7 @@ const OrganisationSettingsPage = class extends Component {
                                                   <div className='mt-3'>
                                                     <Row>
                                                       <div
-                                                        className='mr-2'
+                                                        className='me-2'
                                                         style={{ width: 280 }}
                                                       >
                                                         <Select
@@ -728,7 +728,7 @@ const OrganisationSettingsPage = class extends Component {
                                                           this.state.role,
                                                       ) && (
                                                         <>
-                                                          <Flex className='mr-4'>
+                                                          <Flex className='me-4'>
                                                             <Input
                                                               style={{
                                                                 width: '100%',
@@ -786,7 +786,7 @@ const OrganisationSettingsPage = class extends Component {
                                                               Copy Invite Link
                                                             </Button>
                                                             <Button
-                                                              className='ml-4'
+                                                              className='ms-4'
                                                               type='button'
                                                               onClick={() => {
                                                                 openConfirm(
@@ -971,7 +971,7 @@ const OrganisationSettingsPage = class extends Component {
                                                             />
                                                           </div>
                                                         ) : (
-                                                          <div className='mr-2'>
+                                                          <div className='me-2'>
                                                             {Constants.roles[
                                                               role
                                                             ] || ''}
@@ -981,7 +981,7 @@ const OrganisationSettingsPage = class extends Component {
 
                                                       {role !== 'ADMIN' && (
                                                         <div
-                                                          className='ml-2'
+                                                          className='ms-2'
                                                           style={{
                                                             width: widths[2],
                                                           }}
@@ -1028,7 +1028,7 @@ const OrganisationSettingsPage = class extends Component {
                                                             email,
                                                           )
                                                         }
-                                                        className='btn btn--with-icon ml-auto btn--remove'
+                                                        className='btn btn--with-icon ms-auto btn--remove'
                                                       >
                                                         <RemoveIcon />
                                                       </button>
@@ -1127,7 +1127,7 @@ const OrganisationSettingsPage = class extends Component {
                                                               id,
                                                             )
                                                           }
-                                                          className='btn btn--with-icon ml-auto btn--remove'
+                                                          className='btn btn--with-icon ms-auto btn--remove'
                                                         >
                                                           <RemoveIcon />
                                                         </button>
@@ -1153,7 +1153,7 @@ const OrganisationSettingsPage = class extends Component {
                                                 User Groups
                                               </h5>
                                               <Button
-                                                className='mr-2'
+                                                className='me-2'
                                                 id='btn-invite'
                                                 onClick={() =>
                                                   openModal(
@@ -1199,7 +1199,7 @@ const OrganisationSettingsPage = class extends Component {
                           <FormGroup className='mt-4'>
                             <JSONReference title={'Webhooks'} json={webhooks} />
 
-                            <Column className='mb-3 ml-0'>
+                            <Column className='mb-3 ms-0'>
                               <h5 className='m-b-0'>Audit Webhooks</h5>
                               <p className='fs-small lh-sm mb-4'>
                                 Audit webhooks let you know when audit logs
@@ -1267,7 +1267,7 @@ const OrganisationSettingsPage = class extends Component {
                                           e.preventDefault()
                                           this.deleteWebhook(webhook)
                                         }}
-                                        className='btn btn--with-icon ml-auto btn--remove'
+                                        className='btn btn--with-icon ms-auto btn--remove'
                                       >
                                         <RemoveIcon />
                                       </button>

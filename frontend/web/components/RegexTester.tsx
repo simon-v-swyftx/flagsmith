@@ -87,7 +87,7 @@ const RegexTester: FC<RegexTesterType> = ({
         >
           Cancel
         </Button>
-        <Button className='ml-2' type='submit'>
+        <Button className='ms-2' type='submit'>
           Save RegEx
         </Button>
       </div>

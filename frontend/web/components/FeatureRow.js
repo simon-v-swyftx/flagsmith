@@ -118,7 +118,7 @@ class TheComponent extends Component {
           }}
           className={this.props.isCompareEnv ? 'column' : null}
         >
-          <div className={`mr-2 ${this.props.fadeEnabled && 'faded'}`}>
+          <div className={`me-2 ${this.props.fadeEnabled && 'faded'}`}>
             <Switch
               disabled={!permission || readOnly}
               data-test={`feature-switch-${this.props.index}${
@@ -149,7 +149,7 @@ class TheComponent extends Component {
             />
           </div>
           <div
-            className={`mr-2 clickable ${this.props.fadeValue && 'faded'}`}
+            className={`me-2 clickable ${this.props.fadeValue && 'faded'}`}
             style={this.props.isCompareEnv && { marginTop: '5px' }}
           >
             <FeatureValue
@@ -192,7 +192,7 @@ class TheComponent extends Component {
             <Row>
               <Button
                 theme='text'
-                className={`mr-2 ${readOnly ? 'cursor-default' : ''}`}
+                className={`me-2 ${readOnly ? 'cursor-default' : ''}`}
               >
                 {name}
               </Button>
@@ -200,7 +200,7 @@ class TheComponent extends Component {
                 <Tooltip
                   title={
                     <Button theme='text'>
-                      <span className='ion ion-md-person pr-2' />
+                      <span className='ion ion-md-person pe-2' />
                     </Button>
                   }
                   place='right'
@@ -215,7 +215,7 @@ class TheComponent extends Component {
               {!!projectFlag.num_segment_overrides && (
                 <Tooltip
                   title={
-                    <span className='chip ml-1 chip--sm bg-primary text-white'>
+                    <span className='chip ms-1 chip--sm bg-primary text-white'>
                       <SegmentsIcon className='chip-svg-icon' />
                       <span>{projectFlag.num_segment_overrides}</span>
                     </span>
@@ -230,7 +230,7 @@ class TheComponent extends Component {
               {!!projectFlag.num_identity_overrides && (
                 <Tooltip
                   title={
-                    <span className='chip ml-1 chip--sm bg-primary text-white'>
+                    <span className='chip ms-1 chip--sm bg-primary text-white'>
                       <UsersIcon className='chip-svg-icon' />
                       <span>{projectFlag.num_identity_overrides}</span>
                     </span>

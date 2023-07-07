@@ -22,7 +22,7 @@ const Tooltip = class extends React.Component {
           type='dark'
           effect='solid'
         >
-          {`<div class="flex-row"><div class="icon--tooltip ion-ios-information-circle pr-2"></div><span>${this.props.children}</span></div>`}
+          {`<div class="flex-row"><div class="icon--tooltip ion-ios-information-circle pe-2"></div><span>${this.props.children}</span></div>`}
         </ReactTooltip>
       </span>
     )

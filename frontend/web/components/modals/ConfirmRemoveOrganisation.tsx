@@ -47,7 +47,7 @@ const ConfirmRemoveOrganisation: FC<ConfirmRemoveOrganisationType> = ({
           </div>
           <ModalHR />
           <div className='modal-footer'>
-            <Button onClick={closeModal} theme='secondary' className='mr-2'>
+            <Button onClick={closeModal} theme='secondary' className='me-2'>
               Cancel
             </Button>
             <Button

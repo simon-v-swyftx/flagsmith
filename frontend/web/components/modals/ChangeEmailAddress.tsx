@@ -99,7 +99,7 @@ const ChangeEmailAddress: FC<ChangeEmailAddressType> = ({ onComplete }) => {
           </div>
           <ModalHR />
           <div className='modal-footer'>
-            <Button theme='secondary' className='mr-2' onClick={closeModal}>
+            <Button theme='secondary' className='me-2' onClick={closeModal}>
               Cancel
             </Button>
             <Button

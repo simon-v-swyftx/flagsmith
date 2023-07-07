@@ -101,7 +101,7 @@ const OrgEnvironmentSelect: FC<OrgProjectSelectType> = ({
         <div>
           <p>Copy the following values to your widget configuration.</p>
           <Row className='mb-4'>
-            <span style={{ width: 150 }} className='mr-2 text-left'>
+            <span style={{ width: 150 }} className='me-2 text-left'>
               Project ID
             </span>
             <Input
@@ -114,7 +114,7 @@ const OrgEnvironmentSelect: FC<OrgProjectSelectType> = ({
             <Button
               theme='outline'
               style={{ width: 80 }}
-              className='btn-secondary ml-2 mr-4'
+              className='btn-secondary ms-2 me-4'
               onClick={() => {
                 navigator.clipboard.writeText(projectId)
               }}
@@ -123,7 +123,7 @@ const OrgEnvironmentSelect: FC<OrgProjectSelectType> = ({
             </Button>
           </Row>
           <Row>
-            <span style={{ width: 150 }} className='mr-2 text-left'>
+            <span style={{ width: 150 }} className='me-2 text-left'>
               Environment ID
             </span>
             <Input
@@ -136,7 +136,7 @@ const OrgEnvironmentSelect: FC<OrgProjectSelectType> = ({
             <Button
               theme='outline'
               style={{ width: 80 }}
-              className='btn-secondary ml-2 mr-4'
+              className='btn-secondary ms-2 me-4'
               onClick={() => {
                 navigator.clipboard.writeText(environmentId)
               }}

@@ -65,7 +65,7 @@ const AuditLogPage: FC<AuditLogType> = (props) => {
                                   : env.id,
                               )
                             }}
-                            className='mr-2 mb-4'
+                            className='me-2 mb-4'
                           >
                             {env.name}
                           </ToggleChip>

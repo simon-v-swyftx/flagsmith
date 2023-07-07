@@ -71,7 +71,7 @@ const OrganisationGroupsPage = class extends Component {
                             permission,
                             Constants.organisationPermissions('Manage Groups'),
                             <Button
-                              className='mr-2'
+                              className='me-2'
                               id='btn-invite'
                               disabled={!permission}
                               onClick={() =>

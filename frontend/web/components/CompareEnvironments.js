@@ -176,7 +176,7 @@ class CompareEnvironments extends Component {
                           </strong>
                         )}
                       </div>
-                      <Flex className='mr-2'>
+                      <Flex className='me-2'>
                         <Permission
                           level='environment'
                           permission={Utils.getManageFeaturePermission(
@@ -206,7 +206,7 @@ class CompareEnvironments extends Component {
                           )}
                         </Permission>
                       </Flex>
-                      <Flex className='ml-2'>
+                      <Flex className='ms-2'>
                         <Permission
                           level='environment'
                           permission={Utils.getManageFeaturePermission(
@@ -268,7 +268,7 @@ class CompareEnvironments extends Component {
                                 showArchived: !this.state.showArchived,
                               })
                             }}
-                            className='px-2 py-2 ml-2 mr-2'
+                            className='px-2 py-2 ms-2 me-2'
                             tag={{ label: 'Archived' }}
                           />
                         </Row>

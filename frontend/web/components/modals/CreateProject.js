@@ -99,7 +99,7 @@ const CreateProject = class extends Component {
                   <Button
                     onClick={closeModal}
                     theme='secondary'
-                    className='mr-2'
+                    className='me-2'
                   >
                     Cancel
                   </Button>

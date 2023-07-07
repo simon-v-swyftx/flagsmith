@@ -143,7 +143,7 @@ const ChangeRequestModal = class extends Component {
 
                       <Button
                         theme='text'
-                        className='ml-2'
+                        className='ms-2'
                         onClick={() => {
                           this.setState({ live_from: null })
                         }}

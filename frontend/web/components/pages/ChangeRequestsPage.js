@@ -190,12 +190,12 @@ const ChangeRequestsPage = class extends Component {
                           to={`/project/${projectId}/environment/${environmentId}/change-requests/${id}`}
                         >
                           <Row className='list-item clickable'>
-                            <span className='ion text-primary mr-4 icon ion-md-git-pull-request' />
+                            <span className='ion text-primary me-4 icon ion-md-git-pull-request' />
                             <div>
                               <Button theme='text'>
                                 {title}
                                 {isScheduled && (
-                                  <span className='ml-1 mr-4 ion ion-md-time' />
+                                  <span className='ms-1 me-4 ion ion-md-time' />
                                 )}
                               </Button>
                               <div className='list-item-footer faint'>
@@ -270,7 +270,7 @@ const ChangeRequestsPage = class extends Component {
                           to={`/project/${projectId}/environment/${environmentId}/change-requests/${id}`}
                         >
                           <Row className='list-item clickable'>
-                            <span className='ion text-primary mr-4 icon ion-md-git-pull-request' />
+                            <span className='ion text-primary me-4 icon ion-md-git-pull-request' />
                             <div>
                               <Button theme='text'>{title}</Button>
                               <div className='list-item-footer faint'>

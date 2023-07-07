@@ -36,7 +36,7 @@ const VariationValue = ({
             title='Variation Value'
           />
         </div>
-        <div className='ml-2' style={{ width: 210 }}>
+        <div className='ms-2' style={{ width: 210 }}>
           <InputGroup
             type='text'
             data-test={`featureVariationWeight${Utils.featureStateToValue(
@@ -60,12 +60,12 @@ const VariationValue = ({
           />
         </div>
         {!!onRemove && (
-          <div className='ml-2' style={{ marginTop: 22, width: 30 }}>
+          <div className='ms-2' style={{ marginTop: 22, width: 30 }}>
             <button
               onClick={onRemove}
               id='delete-multivariate'
               type='button'
-              className='btn btn--with-icon ml-auto btn--remove'
+              className='btn btn--with-icon ms-auto btn--remove'
             >
               <RemoveIcon />
             </button>

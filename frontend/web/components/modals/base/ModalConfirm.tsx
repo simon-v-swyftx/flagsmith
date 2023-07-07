@@ -53,7 +53,7 @@ const Confirm: FC<Confirm> = ({
         <Button
           theme='secondary'
           id='confirm-btn-no'
-          className='mr-2'
+          className='me-2'
           disabled={disabled}
           onClick={no}
         >

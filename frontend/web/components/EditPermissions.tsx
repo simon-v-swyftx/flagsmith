@@ -290,7 +290,7 @@ const _EditPermissionsModal: FC<EditPermissionModalType> = (props) => {
       <ModalHR />
 
       <div className='modal-footer'>
-        <Button className='mr-2' onClick={closeModal} theme='secondary'>
+        <Button className='me-2' onClick={closeModal} theme='secondary'>
           Cancel
         </Button>
         <Button
@@ -385,7 +385,7 @@ const EditPermissions: FC<EditPermissionsType> = (props) => {
                 )}
                 {!!users?.length && (
                   <div>
-                    <FormGroup className='panel no-pad pl-2 pr-2 panel--nested'>
+                    <FormGroup className='panel no-pad ps-2 pe-2 panel--nested'>
                       <div className={tabClassName}>
                         <PanelSearch
                           id='org-members-list'
@@ -443,7 +443,7 @@ const EditPermissions: FC<EditPermissionsType> = (props) => {
                                   </Tooltip>
                                 ) : (
                                   <div onClick={onClick} className='flex-row'>
-                                    <span className='mr-3'>
+                                    <span className='me-3'>
                                       {matchingPermissions &&
                                       matchingPermissions.admin
                                         ? `${Format.camelCase(
@@ -483,7 +483,7 @@ const EditPermissions: FC<EditPermissionsType> = (props) => {
           </OrganisationProvider>
         </TabItem>
         <TabItem tabLabel='Groups'>
-          <FormGroup className='panel no-pad pl-2 mt-4 pr-2 panel--nested'>
+          <FormGroup className='panel no-pad ps-2 mt-4 pe-2 panel--nested'>
             <div className={tabClassName}>
               <UserGroupList
                 noTitle

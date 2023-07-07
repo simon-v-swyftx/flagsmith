@@ -235,7 +235,7 @@ const CreateEditIntegration = class extends Component {
         {!this.props.readOnly && (
           <div className={this.props.modal ? 'modal-footer' : 'text-right'}>
             {!!this.props.modal && (
-              <Button onClick={closeModal} className='mr-2' theme='secondary'>
+              <Button onClick={closeModal} className='me-2' theme='secondary'>
                 Cancel
               </Button>
             )}

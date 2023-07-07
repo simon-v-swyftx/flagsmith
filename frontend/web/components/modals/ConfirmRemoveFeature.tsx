@@ -62,7 +62,7 @@ const ConfirmRemoveFeature: FC<ConfirmRemoveFeatureType> = ({
 
           <ModalHR />
           <div className='modal-footer'>
-            <Button className='mr-2' theme='secondary' onClick={closeModal}>
+            <Button className='me-2' theme='secondary' onClick={closeModal}>
               Cancel
             </Button>
             <Button

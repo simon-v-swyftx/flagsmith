@@ -6,6 +6,7 @@ $primary: #6837fc;
 $primary400: #906af6;
 $primary600: #4e25db;
 $primary700: #3919b7;
+$primary900: rgba(29, 17, 62, 1);
 $danger: #ef4d56;
 $success: #27ab95;
 $info: #0aaddf;
@@ -239,3 +240,20 @@ $alert-danger-border-color: $danger;
 $alert-color: $text-icon-grey;
 $alert-font-size: $font-sm;
 $alert-line-height: $line-height-sm;
+
+//Aside
+$aside-width:330px;
+$aside-bg: $primary900;
+$aside-bg-dark: $bg-dark300;
+$aside-color: $text-icon-light-grey;
+$aside-color: $text-icon-light-grey;
+
+// Custom Scrollbar
+$scrollbar-track: rgba(0,0,0,0.1);
+$scrollbar-thumb: rgba(0, 0, 0, 0.2);
+$scrollbar-thumb-hover: rgba(243,236,255,0.6);
+
+$scrollbar-track-dark: rgba(243,236,255,0.1);
+$scrollbar-thumb-dark: rgba(243, 236, 255, 0.2);
+$scrollbar-thumb-dark-hover: rgba(243,236,255,0.6);
+

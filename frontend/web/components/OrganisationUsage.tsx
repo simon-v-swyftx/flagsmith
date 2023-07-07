@@ -40,7 +40,7 @@ const LegendItem: FC<LegendItemType> = ({ colour, title, value }) => {
             }}
           />
         )}
-        <span className='text-muted ml-2'>{title}</span>
+        <span className='text-muted ms-2'>{title}</span>
       </Row>
     </div>
   )
@@ -71,8 +71,8 @@ const OrganisationUsage: FC<OrganisationUsageType> = ({ organisationId }) => {
         </div>
         {project && (
           <>
-            <strong className='ml-2'>Environment</strong>
-            <div className='ml-2' style={{ width: 200 }}>
+            <strong className='ms-2'>Environment</strong>
+            <div className='ms-2' style={{ width: 200 }}>
               <EnvironmentFilter
                 showAll
                 projectId={project}

@@ -63,7 +63,7 @@ class TheComponent extends Component {
                   style={{
                     marginBottom: '0.5rem',
                   }}
-                  className='icon ml-5 ion-md-cog icon-primary'
+                  className='icon ms-5 ion-md-cog icon-primary'
                 />
               </Row>
               <Row>

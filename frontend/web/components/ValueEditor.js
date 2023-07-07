@@ -197,7 +197,7 @@ class ValueEditor extends Component {
             }}
             className={cx('txt primary')}
           >
-            <span className='ion ion-md-clipboard mr-0 ml-2 txt primary' /> copy
+            <span className='ion ion-md-clipboard me-0 ms-2 txt primary' /> copy
           </span>
         </Row>
 

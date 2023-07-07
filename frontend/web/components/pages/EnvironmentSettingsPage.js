@@ -299,7 +299,7 @@ const EnvironmentSettingsPage = class extends Component {
                         </div>
                         <div>
                           <Row space>
-                            <div className='col-md-8 pl-0'>
+                            <div className='col-md-8 ps-0'>
                               <h5 className='m-b-0'>Environment Banner</h5>
                               <p className='fs-small lh-sm mb-0'>
                                 This will show a banner whenever you view its
@@ -336,7 +336,7 @@ const EnvironmentSettingsPage = class extends Component {
                                   })
                                 }
                               />
-                              <div className='ml-2'>
+                              <div className='ms-2'>
                                 <ColourSelect
                                   value={this.state.banner_colour}
                                   onChange={(banner_colour) =>
@@ -346,7 +346,7 @@ const EnvironmentSettingsPage = class extends Component {
                               </div>
                               <Button
                                 onClick={this.saveEnv}
-                                className='ml-2'
+                                className='ms-2'
                                 size='small'
                               >
                                 Save
@@ -359,7 +359,7 @@ const EnvironmentSettingsPage = class extends Component {
                         ) && (
                           <div>
                             <Row space style={{ marginTop: '1.5rem' }}>
-                              <div className='col-md-8 pl-0'>
+                              <div className='col-md-8 ps-0'>
                                 <h5 className='m-b-0'>Hide sensitive data</h5>
                                 <p className='fs-small lh-sm'>
                                   Exclude sensitive data from endpoints
@@ -382,7 +382,7 @@ const EnvironmentSettingsPage = class extends Component {
                                   </strong>
                                 </p>
                               </div>
-                              <div className='col-md-4 pr-0 text-right'>
+                              <div className='col-md-4 pe-0 text-right'>
                                 <div>
                                   <Switch
                                     className='float-right'
@@ -402,7 +402,7 @@ const EnvironmentSettingsPage = class extends Component {
                         )}
                         <FormGroup className='mt-4'>
                           <Row space>
-                            <div className='col-md-8 pl-0'>
+                            <div className='col-md-8 ps-0'>
                               <h5 className='m-b-0'>Change Requests</h5>
                               {!has4EyesPermission ? (
                                 <p className='fs-small lh-sm'>
@@ -444,7 +444,7 @@ const EnvironmentSettingsPage = class extends Component {
                                 </p>
                               )}
                             </div>
-                            <div className='col-md-4 pr-0 text-right'>
+                            <div className='col-md-4 pe-0 text-right'>
                               <div>
                                 <Switch
                                   disabled={!has4EyesPermission}
@@ -522,7 +522,7 @@ const EnvironmentSettingsPage = class extends Component {
                         </FormGroup>
                         <FormGroup className='mt-4'>
                           <Row className='mt-4' space>
-                            <div className='col-md-8 pl-0'>
+                            <div className='col-md-8 ps-0'>
                               <h5>Delete Environment</h5>
                               <p className='fs-small lh-sm'>
                                 This environment will be permanently deleted.
@@ -546,7 +546,7 @@ const EnvironmentSettingsPage = class extends Component {
                                   },
                                 )
                               }
-                              className='btn btn--with-icon ml-auto btn--remove'
+                              className='btn btn--with-icon ms-auto btn--remove'
                             >
                               <RemoveIcon />
                             </Button>
@@ -567,7 +567,7 @@ const EnvironmentSettingsPage = class extends Component {
                               'hide_disabled_flags_environment',
                             ) && (
                               <Row className='mb-4' space>
-                                <div className='col-md-8 pl-0'>
+                                <div className='col-md-8 ps-0'>
                                   <h5 className='m-b-0'>
                                     Hide disabled flags from SDKs
                                   </h5>
@@ -609,7 +609,7 @@ const EnvironmentSettingsPage = class extends Component {
                               </Row>
                             )}
                             <Row className='mt-4' space>
-                              <div className='col-md-8 pl-0'>
+                              <div className='col-md-8 ps-0'>
                                 <h5 className='m-b-0'>
                                   Allow client SDKs to set user traits
                                 </h5>
@@ -618,7 +618,7 @@ const EnvironmentSettingsPage = class extends Component {
                                   from using the client key from setting traits.
                                 </p>
                               </div>
-                              <div className='col-md-4 pr-0 text-right'>
+                              <div className='col-md-4 pe-0 text-right'>
                                 <div>
                                   <Switch
                                     className='float-right'
@@ -637,7 +637,7 @@ const EnvironmentSettingsPage = class extends Component {
                               ) && (
                                 <>
                                   <Row className='mt-4' space>
-                                    <div className='col-md-8 pl-0'>
+                                    <div className='col-md-8 ps-0'>
                                       <h5 className='m-b-0'>
                                         Use Consistent Hashing
                                       </h5>
@@ -649,7 +649,7 @@ const EnvironmentSettingsPage = class extends Component {
                                         evaluation mode in our server side SDKs.
                                       </p>
                                     </div>
-                                    <div className='col-md-4 pr-0 text-right'>
+                                    <div className='col-md-4 pe-0 text-right'>
                                       <div>
                                         <Switch
                                           className='float-right'
@@ -707,7 +707,7 @@ const EnvironmentSettingsPage = class extends Component {
                                   )
                                   toast('Copied')
                                 }}
-                                className='ml-2'
+                                className='ms-2'
                               >
                                 Copy
                               </Button>
@@ -735,7 +735,7 @@ const EnvironmentSettingsPage = class extends Component {
                     <TabItem tabLabel='Webhooks' tabIcon='ion-md-cloud'>
                       <FormGroup className='mt-4'>
                         <Row className='mb-3' space>
-                          <div className='col-md-8 pl-0'>
+                          <div className='col-md-8 ps-0'>
                             <h5 className='m-b-0'>Feature Webhooks</h5>
                             <p className='fs-small lh-sm'>
                               Feature webhooks let you know when features have
@@ -750,7 +750,7 @@ const EnvironmentSettingsPage = class extends Component {
                               </Button>
                             </p>
                           </div>
-                          <div className='col-md-4 pr-0'>
+                          <div className='col-md-4 pe-0'>
                             <Button
                               className='float-right'
                               onClick={this.createWebhook}
@@ -808,7 +808,7 @@ const EnvironmentSettingsPage = class extends Component {
                                       e.preventDefault()
                                       this.deleteWebhook(webhook)
                                     }}
-                                    className='btn btn--with-icon ml-auto btn--remove'
+                                    className='btn btn--with-icon ms-auto btn--remove'
                                   >
                                     <RemoveIcon />
                                   </button>

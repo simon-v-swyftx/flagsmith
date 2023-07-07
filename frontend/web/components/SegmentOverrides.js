@@ -97,9 +97,9 @@ const SegmentOverrideInner = class Override extends React.Component {
             <strong>
               {name || v.segment_name}
               {v.is_feature_specific && (
-                <div className='unread ml-2 px-2'>Feature-Specific</div>
+                <div className='unread ms-2 px-2'>Feature-Specific</div>
               )}
-              {changed && <div className='unread ml-2 px-2'>Unsaved</div>}
+              {changed && <div className='unread ms-2 px-2'>Unsaved</div>}
             </strong>
           </div>
           <div>
@@ -165,7 +165,7 @@ const SegmentOverrideInner = class Override extends React.Component {
                               setShowCreateSegment(true)
                               setSegmentEditId(v.segment)
                             }}
-                            className='ml-2 dark-link'
+                            className='ms-2 dark-link'
                           >
                             Edit Segment
                           </Button>
@@ -175,10 +175,10 @@ const SegmentOverrideInner = class Override extends React.Component {
                             disabled={!permission}
                             target='_blank'
                             href={`${document.location.origin}/project/${this.props.projectId}/environment/${this.props.environmentId}/segments?id=${v.segment}`}
-                            className='ml-2 dark-link'
+                            className='ms-2 dark-link'
                           >
                             Edit Segment
-                            <ion className={'ion ml-1 ion-md-open'} />
+                            <ion className={'ion ms-1 ion-md-open'} />
                           </Button>
                         )}
                       </>,

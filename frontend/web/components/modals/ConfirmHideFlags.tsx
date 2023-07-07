@@ -42,7 +42,7 @@ const ConfirmHideFlags: FC<ConfirmHideFlagsType> = ({ cb, project, value }) => {
       </div>
       <ModalHR />
       <div className='modal-footer'>
-        <Button onClick={closeModal} className='mr-2' theme='secondary'>
+        <Button onClick={closeModal} className='me-2' theme='secondary'>
           Cancel
         </Button>
         <Button

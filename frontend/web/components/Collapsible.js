@@ -21,9 +21,9 @@ const Collapsible = class extends PureComponent {
         <div className='collapsible__header'>
           <div className='flex-row no-wrap'>
             {this.props.active ? (
-              <CaretDownIcon className='mr-2' />
+              <CaretDownIcon className='me-2' />
             ) : (
-              <CaretRightIcon className='mr-2' />
+              <CaretRightIcon className='me-2' />
             )}
             {this.props.title}
           </div>

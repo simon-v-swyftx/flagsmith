@@ -48,7 +48,7 @@ const ConfirmRemoveProject: FC<ConfirmRemoveProjectType> = ({
 
           <ModalHR />
           <div className='modal-footer'>
-            <Button className='mr-2' onClick={closeModal} theme='secondary'>
+            <Button className='me-2' onClick={closeModal} theme='secondary'>
               Cancel
             </Button>
             <Button disabled={challenge != project.name} type='submit'>

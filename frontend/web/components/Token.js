@@ -32,7 +32,7 @@ class Token extends Component {
           <Button
             theme='outline'
             style={{ width: 80 }}
-            className='ml-2 mr-4'
+            className='ms-2 me-4'
             onClick={() => {
               navigator.clipboard.writeText(this.props.token)
               toast('Copied')
@@ -43,7 +43,7 @@ class Token extends Component {
         ) : (
           <Button
             style={{ width: 80 }}
-            className='ml-2 mr-4'
+            className='ms-2 me-4'
             onClick={() => this.setState({ showToken: !this.state.showToken })}
           >
             {this.state.showToken ? 'Hide' : 'Show'}

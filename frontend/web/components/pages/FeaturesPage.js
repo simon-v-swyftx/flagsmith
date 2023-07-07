@@ -371,7 +371,7 @@ const FeaturesPage = class extends Component {
                                             this.filter,
                                           )
                                         }}
-                                        className='px-2 py-2 ml-2 mr-2'
+                                        className='px-2 py-2 ms-2 me-2'
                                         tag={{ label: 'Archived' }}
                                       />
                                     </TagFilter>

@@ -26,7 +26,7 @@ const RebrandBanner = class extends React.Component {
           <Row>
             Bullet Train is now Flagsmith, read about it{' '}
             <a
-              className='ml-1'
+              className='ms-1'
               target='_blank'
               href='https://flagsmith.com/blog/rebrand'
               rel='noreferrer'
@@ -34,7 +34,7 @@ const RebrandBanner = class extends React.Component {
               here
             </a>
             .
-            <Button onClick={this.dismiss} className='btn--small ml-2'>
+            <Button onClick={this.dismiss} className='btn--small ms-2'>
               Ok
             </Button>
           </Row>

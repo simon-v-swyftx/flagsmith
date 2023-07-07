@@ -72,7 +72,7 @@ const SegmentSelect: FC<SegmentSelectType> = ({
           <div ref={innerRef} {...innerProps} className='react-select__option'>
             {children}
             {!!data.feature && (
-              <div className='unread ml-2 px-2'>Feature-Specific</div>
+              <div className='unread ms-2 px-2'>Feature-Specific</div>
             )}
           </div>
         ),

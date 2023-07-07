@@ -57,7 +57,7 @@ const CreateWebhook = class extends Component {
             }}
           >
             <Row space>
-              <Flex className='mb-4 mr-4'>
+              <Flex className='mb-4 me-4'>
                 <div>
                   <label>*URL (Expects a 200 response from POST)</label>
                 </div>
@@ -73,7 +73,7 @@ const CreateWebhook = class extends Component {
                   placeholder='https://example.com/feature-changed/'
                 />
               </Flex>
-              <FormGroup className='mb-4 ml-1'>
+              <FormGroup className='mb-4 ms-1'>
                 <div>
                   <label>Enabled</label>
                 </div>
@@ -86,7 +86,7 @@ const CreateWebhook = class extends Component {
                 </div>
               </FormGroup>
             </Row>
-            <Flex className='mb-4 mr-4'>
+            <Flex className='mb-4 me-4'>
               <div>
                 <label>
                   Secret (Optional) -{' '}
@@ -112,7 +112,7 @@ const CreateWebhook = class extends Component {
                 placeholder='Secret'
               />
             </Flex>
-            <Flex className='mb-4 mr-4'>
+            <Flex className='mb-4 me-4'>
               {error && (
                 <ErrorMessage error='Could not create a webhook for this url, please ensure you include http or https.' />
               )}
@@ -155,12 +155,12 @@ const CreateWebhook = class extends Component {
                 </div>
               </div>
             </Flex>
-            <FormGroup className='mb-4 ml-1'>
+            <FormGroup className='mb-4 ms-1'>
               <div>
                 <label>Example Payload </label>
                 <Button
                   theme='text'
-                  className='ml-1'
+                  className='ms-1'
                   href='https://docs.flagsmith.com/system-administration/webhooks#environment-web-hooks'
                   target='_blank'
                 >

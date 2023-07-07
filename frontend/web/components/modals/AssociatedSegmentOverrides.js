@@ -95,7 +95,7 @@ class TheComponent extends Component {
       (results && results[this.state.selectedEnv]) || [],
     )
     const addOverride = (
-      <div style={{ width: 300 }} className='p-2 ml-2'>
+      <div style={{ width: 300 }} className='p-2 ms-2'>
         <WrappedSegmentOverrideAdd
           onSave={this.fetch}
           addItem={this.addItem}
@@ -346,7 +346,7 @@ export default class SegmentOverridesInner extends Component {
                         {originalSegmentOverrides.length}
                         <a
                           href='#'
-                          className='ml-2'
+                          className='ms-2'
                           onClick={this.openPriorities}
                         >
                           Edit

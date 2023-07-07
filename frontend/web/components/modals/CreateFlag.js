@@ -852,7 +852,7 @@ const CreateFlag = class extends Component {
                                     <Row className='justify-content-center'>
                                       Value{' '}
                                       {this.state.valueChanged && (
-                                        <div className='unread ml-2 px-1'>
+                                        <div className='unread ms-2 px-1'>
                                           {'*'}
                                         </div>
                                       )}
@@ -938,7 +938,7 @@ const CreateFlag = class extends Component {
                                                     onClick={() =>
                                                       saveFeatureValue(true)
                                                     }
-                                                    className='mr-2'
+                                                    className='me-2'
                                                     type='button'
                                                     data-test='create-change-request'
                                                     id='create-change-request-btn'
@@ -963,7 +963,7 @@ const CreateFlag = class extends Component {
                                                       <Button
                                                         theme='outline'
                                                         disabled
-                                                        className='mr-2'
+                                                        className='me-2'
                                                         type='button'
                                                         data-test='create-change-request'
                                                         id='create-change-request-btn'
@@ -1042,7 +1042,7 @@ const CreateFlag = class extends Component {
                                       <Row className='justify-content-center'>
                                         Segment Overrides{' '}
                                         {this.state.segmentsChanged && (
-                                          <div className='unread ml-2 px-2'>
+                                          <div className='unread ms-2 px-2'>
                                             *
                                           </div>
                                         )}
@@ -1325,7 +1325,7 @@ const CreateFlag = class extends Component {
                                                   })
                                                 }
                                               />
-                                              <div className='ml-2'>
+                                              <div className='ms-2'>
                                                 {feature_state_value && (
                                                   <FeatureValue
                                                     value={feature_state_value}
@@ -1336,7 +1336,7 @@ const CreateFlag = class extends Component {
                                               <a
                                                 target='_blank'
                                                 href={`/project/${this.props.projectId}/environment/${this.props.environmentId}/users/${identity.identifier}/${identity.id}?flag=${projectFlag.name}`}
-                                                className='ml-2 btn btn-link'
+                                                className='ms-2 btn btn-link'
                                                 onClick={() => {}}
                                                 rel='noreferrer'
                                               >
@@ -1410,7 +1410,7 @@ const CreateFlag = class extends Component {
                                       <Row className='justify-content-center'>
                                         Settings{' '}
                                         {this.state.settingsChanged && (
-                                          <div className='unread ml-2 px-1'>
+                                          <div className='unread ms-2 px-1'>
                                             {'*'}
                                           </div>
                                         )}
@@ -1426,7 +1426,7 @@ const CreateFlag = class extends Component {
                                     />
 
                                     {isEdit && (
-                                      <div className='text-right mr-3'>
+                                      <div className='text-right me-3'>
                                         {createFeature ? (
                                           <p className='text-right fs-small lh-sm'>
                                             This will save the above settings{' '}
@@ -1476,7 +1476,7 @@ const CreateFlag = class extends Component {
                                   project.prevent_flag_defaults,
                                 )}
                                 {!identity && (
-                                  <div className='text-right mr-3 mb-3'>
+                                  <div className='text-right me-3 mb-3'>
                                     {project.prevent_flag_defaults ? (
                                       <p className='text-right'>
                                         This will create the feature for{' '}
@@ -1513,10 +1513,10 @@ const CreateFlag = class extends Component {
                             )}
 
                             {identity && (
-                              <div className='pr-3'>
+                              <div className='pe-3'>
                                 {identity ? (
                                   <div className='mb-3'>
-                                    <p className='text-left ml-3'>
+                                    <p className='text-left ms-3'>
                                       This will update the feature value for the
                                       user <strong>{identityName}</strong> in
                                       <strong>

@@ -7,15 +7,15 @@
     }
     /* Track */
     &::-webkit-scrollbar-track {
-        background: $bt-scrollbar-track;
+        background: $scrollbar-track;
         border-radius: $border-radius;
     }
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        background: $bt-scrollbar-thumb;
+        background: $scrollbar-thumb;
         border-radius: $border-radius;
         &:hover {
-            background: $bt-scrollbar-thumb-hover;
+            background: $scrollbar-thumb-hover;
         }
     }
 }
@@ -28,15 +28,15 @@
     }
     /* Track */
     &::-webkit-scrollbar-track {
-        background: $bt-scrollbar-track-dark;
+        background: $scrollbar-track-dark;
         border-radius: $border-radius;
     }
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        background: $bt-scrollbar-thumb-dark;
+        background: $scrollbar-thumb-dark;
         border-radius: $border-radius;
         &:hover {
-            background: $bt-scrollbar-thumb-dark-hover;
+            background: $scrollbar-thumb-dark-hover;
         }
     }
 }

@@ -86,7 +86,7 @@ export class CreateAPIKey extends PureComponent {
                     />
                   </Flex>
 
-                  <div className='ml-2'>
+                  <div className='ms-2'>
                     <Button
                       disabled={!this.state.expiry_date}
                       onClick={() => this.setState({ expiry_date: null })}
@@ -118,7 +118,7 @@ export class CreateAPIKey extends PureComponent {
           <>
             <ModalHR />
             <div className='modal-footer'>
-              <Button onClick={closeModal} theme='secondary' className='mr-2'>
+              <Button onClick={closeModal} theme='secondary' className='me-2'>
                 Cancel
               </Button>
               <Button
@@ -207,7 +207,7 @@ export default class AdminAPIKeys extends PureComponent {
           title={'Terraform API Keys'}
           json={apiKeys}
         />
-        <Column className='mt-4 ml-0'>
+        <Column className='mt-4 ms-0'>
           <h5 className='mb-0'>Terraform API Keys</h5>
           <p className='mb-4 fs-small lh-sm'>
             Terraform API keys are used to authenticate with the Admin API.{' '}
@@ -248,7 +248,7 @@ export default class AdminAPIKeys extends PureComponent {
                         </Flex>
                         <Button
                           onClick={() => this.remove(v)}
-                          className='btn btn--with-icon ml-auto btn--remove'
+                          className='btn btn--with-icon ms-auto btn--remove'
                         >
                           <RemoveIcon />
                         </Button>

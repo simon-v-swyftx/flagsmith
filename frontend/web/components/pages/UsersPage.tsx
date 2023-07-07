@@ -213,7 +213,7 @@ const UsersPage: FC<UsersPageType> = (props) => {
                         >
                           <Button theme='text'>
                             {identifier}
-                            <span className='ion-ios-arrow-forward ml-3' />
+                            <span className='ion-ios-arrow-forward ms-3' />
                           </Button>
                         </Link>
                       </Flex>

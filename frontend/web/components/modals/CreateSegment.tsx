@@ -272,7 +272,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
                   title={
                     <Button
                       theme='outline'
-                      className='ml-2 btn--outline-danger'
+                      className='ms-2 btn--outline-danger'
                       data-test='add-rule'
                       type='button'
                     >
@@ -287,7 +287,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
               ) : (
                 <Button
                   theme='outline'
-                  className='ml-2 btn--outline-danger'
+                  className='ms-2 btn--outline-danger'
                   data-test='add-rule'
                   type='button'
                 >
@@ -317,7 +317,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
 
       {!isEdit && (
         <Row className='mb-4'>
-          <label className='mr-2 mb-0' htmlFor='segmentID'>
+          <label className='me-2 mb-0' htmlFor='segmentID'>
             ID
           </label>
           <Flex>
@@ -422,7 +422,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
                 theme='secondary'
                 type='button'
                 onClick={onCancel}
-                className='mr-4'
+                className='me-4'
               >
                 Cancel
               </Button>
@@ -558,7 +558,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
                                   } badge`}
                                 >
                                   <span
-                                    className={`ion mr-1 line ${
+                                    className={`ion me-1 line ${
                                       inSegment
                                         ? ' text-primary ion-ios-checkmark-circle'
                                         : 'ion-ios-remove-circle'

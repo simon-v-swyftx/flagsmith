@@ -137,7 +137,7 @@ export default class Rule extends PureComponent {
               {isLastRule && !this.props.readOnly ? (
                 <Button
                   theme='outline'
-                  className='ml-2'
+                  className='ms-2'
                   data-test={`${this.props['data-test']}-or`}
                   type='button'
                   onClick={this.addRule}

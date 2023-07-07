@@ -394,7 +394,7 @@ const UserPage = class extends Component {
                                               this.filter,
                                             )
                                           }}
-                                          className='px-2 py-2 ml-2 mr-2'
+                                          className='px-2 py-2 ms-2 me-2'
                                           tag={{ label: 'Archived' }}
                                         />
                                       </TagFilter>
@@ -518,7 +518,7 @@ const UserPage = class extends Component {
                                           <Row>
                                             <Button
                                               theme='text'
-                                              className='mr-2'
+                                              className='me-2'
                                             >
                                               {name}
                                             </Button>
@@ -566,7 +566,7 @@ const UserPage = class extends Component {
                                                     </span>
                                                   )}
                                                 </Flex>
-                                                <span className='ml-1 chip-icon icon ion-md-information' />
+                                                <span className='ms-1 chip-icon icon ion-md-information' />
                                               </Row>
                                             </span>
                                           ) : flagValueDifferent ? (

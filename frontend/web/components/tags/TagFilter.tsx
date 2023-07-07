@@ -44,13 +44,13 @@ const TagFilter: FC<TagFilterType> = ({
   }
   return (
     <Row className='tag-filter mx-2 mt-4'>
-      <div className='ml-1'>
+      <div className='ms-1'>
         <Row>
           <Flex>
             <Row className='tag-filter-list'>
               {children}
               {unTagged && (
-                <div className='mr-1'>
+                <div className='me-1'>
                   <Tag
                     key={unTagged.id}
                     selected={isSelected(unTagged as any)}
@@ -66,7 +66,7 @@ const TagFilter: FC<TagFilterType> = ({
                   key={tag.id}
                   selected={isSelected(tag)}
                   onClick={onSelect}
-                  className='px-2 py-2 mr-1'
+                  className='px-2 py-2 me-1'
                   tag={tag}
                 />
               ))}

@@ -171,7 +171,7 @@ const ProjectSettingsPage = class extends Component {
                         <FormGroup>
                           <form onSubmit={saveProject}>
                             <Row className='align-items-start'>
-                              <Column className='ml-0'>
+                              <Column className='ms-0'>
                                 <Input
                                   ref={(e) => (this.input = e)}
                                   defaultValue={project.name}
@@ -316,7 +316,7 @@ const ProjectSettingsPage = class extends Component {
                                     placeholder='Regular Expression'
                                   />
                                   <Button
-                                    className='ml-2'
+                                    className='ms-2'
                                     type='submit'
                                     disabled={!regexValid || isLoading}
                                   >
@@ -338,7 +338,7 @@ const ProjectSettingsPage = class extends Component {
                                         />,
                                       )
                                     }}
-                                    className='ml-2'
+                                    className='ms-2'
                                     disabled={!regexValid || isLoading}
                                   >
                                     Test RegEx
@@ -404,7 +404,7 @@ const ProjectSettingsPage = class extends Component {
                                   )
                                 })
                               }
-                              className='btn btn--with-icon ml-auto btn--remove'
+                              className='btn btn--with-icon ms-auto btn--remove'
                             >
                               <RemoveIcon />
                             </Button>

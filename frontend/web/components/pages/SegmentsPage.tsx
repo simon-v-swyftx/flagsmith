@@ -242,7 +242,7 @@ const SegmentsPage: FC<SegmentsPageType> = (props) => {
                                 <span data-test={`segment-${i}-name`}>
                                   {name}
                                   {feature && (
-                                    <div className='unread ml-2 px-2'>
+                                    <div className='unread ms-2 px-2'>
                                       {' '}
                                       Feature-Specific
                                     </div>

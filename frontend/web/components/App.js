@@ -515,7 +515,7 @@ const App = class extends Component {
                                             (Project.superUserCreateOnly &&
                                               AccountStore.model
                                                 .is_superuser)) && (
-                                            <div className='pl-3 pr-3 mt-2 mb-2'>
+                                            <div className='ps-3 pe-3 mt-2 mb-2'>
                                               <Link
                                                 id='create-org-link'
                                                 onClick={toggle}
@@ -537,7 +537,7 @@ const App = class extends Component {
                                         >
                                           <img
                                             src='/static/images/icons/aside/logout-dark.svg'
-                                            className='mr-2'
+                                            className='me-2'
                                           />
                                           Logout
                                         </a>

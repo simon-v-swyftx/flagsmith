@@ -53,15 +53,15 @@ const ProjectSelectPage = class extends Component {
           {({ isLoading, projects }) => (
             <div>
               {projects && projects.length ? (
-                <div className='flex-row pl-0 pr-0'>
-                  <div className='col-md-9 pl-0 pr-0'>
+                <div className='flex-row ps-0 pe-0'>
+                  <div className='col-md-9 ps-0 pe-0'>
                     <h3>Your projects</h3>
                     <p className='fs-small lh-sm'>
                       Projects let you create and manage a set of features and
                       configure them between multiple app environments.
                     </p>
                   </div>
-                  <div className='col-md-3 pl-0 pr-0'>
+                  <div className='col-md-3 ps-0 pe-0'>
                     <Permission
                       level='organisation'
                       permission='CREATE_PROJECT'

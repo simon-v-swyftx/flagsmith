@@ -52,10 +52,10 @@ export default class TheComponent extends Component {
         {hasEnabled && !hasConfirmed && (
           <div>
             <Row style={{ alignItems: 'flex-start', flexWrap: 'noWrap' }}>
-              <div className='mr-2'>
+              <div className='me-2'>
                 <QRCode renderAs='svg' size={171} value={activationQR} />
               </div>
-              <div className='ml-2 panel--grey'>
+              <div className='ms-2 panel--grey'>
                 <div className='mb-1'>
                   <strong>Can't scan the code?</strong>
                 </div>

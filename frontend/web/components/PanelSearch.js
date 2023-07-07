@@ -142,7 +142,7 @@ const PanelSearch = class extends Component {
           this.props.filterRow || this.props.sorting ? (
             <Row>
               {!!this.props.sorting && (
-                <Row className='mr-3 relative'>
+                <Row className='me-3 relative'>
                   <Popover
                     renderTitle={(toggle) => (
                       <a onClick={toggle}>
@@ -188,7 +188,7 @@ const PanelSearch = class extends Component {
               {!!this.props.filterRow && (
                 <Row>
                   {this.props.showExactFilter && (
-                    <div className='mr-2' style={{ width: 200 }}>
+                    <div className='me-2' style={{ width: 200 }}>
                       <Select
                         className='select-sm'
                         styles={{
@@ -245,7 +245,7 @@ const PanelSearch = class extends Component {
                       }}
                       type='text'
                       value={search}
-                      className='pl-4'
+                      className='ps-4'
                       size='small'
                       search
                     />

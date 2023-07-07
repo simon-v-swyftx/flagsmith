@@ -50,7 +50,7 @@ class CreateServerSideKeyModal extends Component {
           </div>
           <ModalHR />
           <div className='modal-footer'>
-            <Button onClick={closeModal} theme='secondary' className={'mr-2'}>
+            <Button onClick={closeModal} theme='secondary' className={'me-2'}>
               Cancel
             </Button>
             <Button
@@ -143,7 +143,7 @@ class ServerSideSDKKeys extends Component {
     return (
       <FormGroup className='m-y-3'>
         <Row className='mb-3' space>
-          <div className='col-md-8 pl-0'>
+          <div className='col-md-8 ps-0'>
             <h5 className='m-b-0'>Server-side Environment Keys</h5>
             <p className='fs-small lh-sm'>
               Flags can be evaluated locally within your own Server environments
@@ -162,7 +162,7 @@ class ServerSideSDKKeys extends Component {
               Environment Key.
             </p>
           </div>
-          <div className='col-md-4 pr-0'>
+          <div className='col-md-4 pe-0'>
             <Button
               onClick={this.createKey}
               className='float-right'

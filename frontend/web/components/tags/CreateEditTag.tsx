@@ -100,7 +100,7 @@ const CreateEditTag: FC<CreateEditTagType> = ({
         component={
           <Row className='mb-2'>
             {Constants.tagColors.map((color) => (
-              <div key={color} className='tag--select mr-2 mb-2'>
+              <div key={color} className='tag--select me-2 mb-2'>
                 <Tag
                   onClick={(e: TTag) => update('color', e.color)}
                   selected={tag?.color === color}

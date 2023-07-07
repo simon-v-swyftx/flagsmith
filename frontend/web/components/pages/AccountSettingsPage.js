@@ -269,7 +269,7 @@ class TheComponent extends Component {
                         />
                       </Row>
                       <Row className='mt-4' space>
-                        <div className='col-md-8 pl-0'>
+                        <div className='col-md-8 ps-0'>
                           <h5>Delete Account</h5>
                           <p className='fs-small lh-sm'>
                             Your account data will be permanently deleted.
@@ -281,7 +281,7 @@ class TheComponent extends Component {
                           onClick={() =>
                             this.confirmDeleteAccount(lastUserOrganisations, id)
                           }
-                          className='btn btn--with-icon ml-auto btn--remove'
+                          className='btn btn--with-icon ms-auto btn--remove'
                         >
                           <RemoveIcon />
                         </Button>
@@ -420,7 +420,7 @@ class TheComponent extends Component {
                         <div className='text-right'>
                           <button
                             type='button'
-                            className='btn btn-primary text-center ml-auto mt-2 mb-2'
+                            className='btn btn-primary text-center ms-auto mt-2 mb-2'
                             onClick={() => {
                               openModal(
                                 'Payment plans',

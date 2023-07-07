@@ -274,7 +274,7 @@ const HomePage = class extends React.Component {
                                   {isInvite && (
                                     <div className='notification flex-row'>
                                       <span className='notification__icon ion-md-information-circle-outline mb-2' />
-                                      <p className='notification__text pl-3'>
+                                      <p className='notification__text ps-3'>
                                         Login to accept your invite
                                       </p>
                                     </div>
@@ -392,7 +392,7 @@ const HomePage = class extends React.Component {
                                 <Button
                                   theme='text'
                                   data-test='jsSignup'
-                                  className='ml-1'
+                                  className='ms-1'
                                 >
                                   Sign up
                                 </Button>
@@ -471,7 +471,7 @@ const HomePage = class extends React.Component {
                             {isInvite && (
                               <div className='notification flex-row'>
                                 <span className='notification__icon ion-md-information-circle-outline mb-2' />
-                                <p className='notification__text pl-3'>
+                                <p className='notification__text ps-3'>
                                   Create an account to accept your invite
                                 </p>
                               </div>
@@ -586,7 +586,7 @@ const HomePage = class extends React.Component {
                                     htmlFor='mailinglist'
                                     style={{ display: 'inline' }}
                                   >
-                                    <span className='checkbox mr-2'>
+                                    <span className='checkbox me-2'>
                                       {this.state.marketing_consent_given && (
                                         <Icon name='checkmark' />
                                       )}
@@ -614,7 +614,7 @@ const HomePage = class extends React.Component {
                       <Row className='justify-content-center mt-2'>
                         Have an account?{' '}
                         <Link id='existing-member-btn' to={`/login${redirect}`}>
-                          <Button theme='text' className='ml-1'>
+                          <Button theme='text' className='ms-1'>
                             Log in
                           </Button>
                         </Link>
