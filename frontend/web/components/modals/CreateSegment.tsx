@@ -5,6 +5,7 @@ import useSearchThrottle from 'common/useSearchThrottle'
 import {
   EdgePagedResponse,
   Identity,
+  Operator,
   Segment,
   SegmentRule,
 } from 'common/types/responses'
@@ -61,6 +62,7 @@ type CreateSegmentType = {
   segment?: Segment
 }
 
+let _operators: Operator[] | null = null
 const CreateSegment: FC<CreateSegmentType> = ({
   condensed,
   environmentId,
@@ -214,7 +216,40 @@ const CreateSegment: FC<CreateSegmentType> = ({
     }
     //eslint-disable-next-line
   }, [updateSuccess])
+  const operators: Operator[] | null =
+    _operators || Utils.getFlagsmithValue('segment_operators')
+      ? JSON.parse(Utils.getFlagsmithValue('segment_operators'))
+      : null
+  if (operators) {
+    _operators = operators
+  }
 
+  const allWarnings = useMemo(() => {
+    const warnings: string[] = []
+    const parseRules = (
+      rules: SegmentRule[] | null,
+      _operators: Operator[],
+    ) => {
+      rules?.map((v) => {
+        v?.conditions?.map((condition) => {
+          const operatorObj = operators?.find(
+            (op) => op.value === condition.operator,
+          )
+          if (
+            operatorObj?.warning &&
+            !warnings?.includes(operatorObj.warning)
+          ) {
+            warnings.push(operatorObj.warning)
+          }
+        })
+        parseRules(v.rules, operators!)
+      })
+    }
+    if (operators) {
+      parseRules(rules, operators)
+    }
+    return warnings
+  }, [operators, rules])
   const rulesEl = (
     <div className='overflow-visible'>
       <div>
@@ -237,11 +272,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
                   readOnly={readOnly}
                   data-test={`rule-${i}`}
                   rule={rule}
-                  operators={
-                    Utils.getFlagsmithValue('segment_operators')
-                      ? JSON.parse(Utils.getFlagsmithValue('segment_operators'))
-                      : null
-                  }
+                  operators={operators}
                   onRemove={() => removeRule(0, i)}
                   onChange={(v: SegmentRule) => updateRule(0, i, v)}
                 />
@@ -363,7 +394,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
             className={'ml-0'}
           />
           <span
-            style={{ marginLeft: '12px', fontWeight: 'normal' }}
+            style={{ fontWeight: 'normal', marginLeft: '12px' }}
             className='mb-0 text-dark'
           >
             {showDescriptions
@@ -379,6 +410,11 @@ const CreateSegment: FC<CreateSegmentType> = ({
             Note: Trait names are case sensitive
           </span>
         </Flex>
+        {allWarnings?.map((warning, i) => (
+          <InfoMessage key={i}>
+            <div dangerouslySetInnerHTML={{ __html: warning }} />
+          </InfoMessage>
+        ))}
         {rulesEl}
       </div>
 
@@ -486,7 +522,6 @@ const CreateSegment: FC<CreateSegmentType> = ({
                     title='Segment Users'
                     className='no-pad'
                     isLoading={identitiesLoading}
-                    icon='ion-md-person'
                     items={identities?.results}
                     paging={identities}
                     showExactFilter
@@ -524,7 +559,10 @@ const CreateSegment: FC<CreateSegmentType> = ({
                       { id, identifier }: { id: string; identifier: string },
                       index: number,
                     ) => (
-                      <div key={id}>
+                      <Row
+                        key={id}
+                        className='list-item list-item-sm clickable'
+                      >
                         <IdentitySegmentsProvider
                           fetch
                           id={id}
@@ -538,25 +576,20 @@ const CreateSegment: FC<CreateSegmentType> = ({
                             return (
                               <Row
                                 space
-                                className='list-item clickable'
+                                className='px-3'
                                 key={id}
                                 data-test={`user-item-${index}`}
                               >
-                                <strong>{identifier}</strong>
+                                <div className='font-weight-medium'>
+                                  {identifier}
+                                </div>
                                 <div
                                   className={`${
                                     inSegment
-                                      ? 'strong text-primary'
-                                      : 'text-faint muted faint text-small'
-                                  } badge`}
+                                      ? 'font-weight-medium text-primary'
+                                      : 'text-muted fs-small lh-sm'
+                                  }`}
                                 >
-                                  <span
-                                    className={`ion mr-1 line ${
-                                      inSegment
-                                        ? ' text-primary ion-ios-checkmark-circle'
-                                        : 'ion-ios-remove-circle'
-                                    }`}
-                                  />
                                   {inSegment
                                     ? 'User in segment'
                                     : 'Not in segment'}
@@ -565,7 +598,7 @@ const CreateSegment: FC<CreateSegmentType> = ({
                             )
                           }}
                         </IdentitySegmentsProvider>
-                      </div>
+                      </Row>
                     )}
                     filterRow={() => true}
                     search={searchInput}

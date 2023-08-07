@@ -90,7 +90,9 @@ const SegmentOverrideInner = class Override extends React.Component {
         data-test={`segment-override-${index}`}
         style={{ zIndex: 9999999999 }}
         className={`segment-overrides mb-2${
-          this.props.id ? '' : ' panel panel-without-heading panel--draggable'
+          this.props.id
+            ? ''
+            : ' panel panel-without-heading panel--draggable p-3'
         }`}
       >
         <Row className='panel-content' space>
@@ -144,7 +146,9 @@ const SegmentOverrideInner = class Override extends React.Component {
                   onClick={confirmRemove}
                   className='btn btn-with-icon'
                 >
-                 <Icon name="trash-2" fill={'#656D7B'} width={20}/>
+                  <span className='no-pointer'>
+                    <Icon name='trash-2' fill={'#656D7B'} width={20} />
+                  </span>
                 </button>
               )}
               {!!v.id && (
@@ -561,7 +565,7 @@ class TheComponent extends Component {
                 environmentId={this.props.environmentId}
                 projectId={this.props.projectId}
               />
-             </div>
+            </div>
           )}
           {this.props.showCreateSegment && this.state.segmentEditId && (
             <CreateSegmentModal
