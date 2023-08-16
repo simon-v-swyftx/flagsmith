@@ -123,7 +123,7 @@ INSTALLED_APPS = [
     "app",
     "e2etests",
     "simple_history",
-    "drf_yasg2",
+    "drf_yasg",
     "audit",
     "permissions",
     "projects.tags",
@@ -232,6 +232,10 @@ REST_FRAMEWORK = {
         "invite": "10/min",
     },
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_RENDERER_CLASSES": [
+        "util.renderers.PydanticJSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ],
 }
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -424,13 +428,13 @@ SWAGGER_SETTINGS = {
             "type": "apiKey",
             "in": "header",
             "name": "Authorization",
-            "description": "Every time you create a new Project Environment, an environment API key is automatically generated for you. This is all you need to pass in to get access to Flags etc. <br />Example value: <br />Token 884b1b4c6b4ddd112e7a0a139f09eb85e8c254ff",  # noqa
+            "description": "For Private Endpoints. <a href='https://docs.flagsmith.com/clients/rest#private-api-endpoints'>Find out more</a>.",  # noqa
         },
         "Public": {
             "type": "apiKey",
             "in": "header",
             "name": "X-Environment-Key",
-            "description": "Things like creating new flags, environments, toggle flags or indeed anything that is possible from the administrative front end. <br />Example value: <br />FFnVjhp7xvkT5oTLq4q788",  # noqa
+            "description": "For Public Endpoints. <a href='https://docs.flagsmith.com/clients/rest#public-api-endpoints'>Find out more</a>.",  # noqa
         },
     },
 }
@@ -637,6 +641,7 @@ TRENCH_AUTH = {
             "HANDLER": "custom_auth.mfa.backends.application.CustomApplicationBackend",
         },
     },
+    "SECRET_KEY_LENGTH": 32,
 }
 
 USER_CREATE_PERMISSIONS = env.list(
@@ -654,6 +659,7 @@ DJOSER = {
     "SERIALIZERS": {
         "token": "custom_auth.serializers.CustomTokenSerializer",
         "user_create": "custom_auth.serializers.CustomUserCreateSerializer",
+        "user_delete": "custom_auth.serializers.CustomUserDelete",
         "current_user": "users.serializers.CustomCurrentUserSerializer",
     },
     "EMAIL": {
@@ -795,6 +801,10 @@ if AUTH_CONTROLLER_INSTALLED:
     INSTALLED_APPS.append("auth_controller")
     AUTHENTICATION_BACKENDS.insert(0, "auth_controller.backends.AuthControllerBackend")
 
+IS_RBAC_INSTALLED = importlib.util.find_spec("rbac") is not None
+if IS_RBAC_INSTALLED:
+    INSTALLED_APPS.append("rbac")
+
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Used to keep edge identities in sync by forwarding the http requests
@@ -835,6 +845,15 @@ TASK_RUN_METHOD = env.enum(
 ENABLE_TASK_PROCESSOR_HEALTH_CHECK = env.bool(
     "ENABLE_TASK_PROCESSOR_HEALTH_CHECK", default=False
 )
+
+ENABLE_CLEAN_UP_OLD_TASKS = env.bool("ENABLE_CLEAN_UP_OLD_TASKS", default=True)
+TASK_DELETE_RETENTION_DAYS = env.int("TASK_DELETE_RETENTION_DAYS", default=30)
+TASK_DELETE_BATCH_SIZE = env.int("TASK_DELETE_BATCH_SIZE", default=2000)
+TASK_DELETE_INCLUDE_FAILED_TASKS = env.bool(
+    "TASK_DELETE_INCLUDE_FAILED_TASKS", default=False
+)
+TASK_DELETE_RUN_TIME = env.time("TASK_DELETE_RUN_TIME", default="01:00")
+TASK_DELETE_RUN_EVERY = env.timedelta("TASK_DELETE_RUN_EVERY", default=86400)
 
 # Real time(server sent events) settings
 SSE_SERVER_BASE_URL = env.str("SSE_SERVER_BASE_URL", None)
@@ -884,6 +903,12 @@ SERIALIZATION_MODULES = {"json": "import_export.json_serializers_with_metadata_s
 DOMAIN_OVERRIDE = env.str("FLAGSMITH_DOMAIN", "")
 # Used when no Django site is specified.
 DEFAULT_DOMAIN = "app.flagsmith.com"
+
+# Define the cooldown duration, in seconds, for password reset emails
+PASSWORD_RESET_EMAIL_COOLDOWN = env.int("PASSWORD_RESET_EMAIL_COOLDOWN", 60 * 60 * 24)
+
+# Limit the count of password reset emails that can be dispatched within the `PASSWORD_RESET_EMAIL_COOLDOWN` timeframe.
+MAX_PASSWORD_RESET_EMAILS = env.int("MAX_PASSWORD_RESET_EMAILS", 5)
 
 DEFAULT_USER_EMAIL = env.str("DEFAULT_USER_EMAIL", None)
 DEFAULT_USER_PASSWORD = env.str("DEFAULT_USER_PASSWORD", None)

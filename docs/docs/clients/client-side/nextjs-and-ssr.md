@@ -9,13 +9,12 @@ The JavaScript Library contains a bundled isomorphic library, allowing you to fe
 application with the resulting state.
 
 Example applications for a variety of Next.js and SSR can be found
-[here](https://github.com/flagsmith/flagsmith-js-client/tree/main/examples/nextjs).
+[here](https://github.com/flagsmith/flagsmith-js-examples/tree/main/nextjs).
 
-Example applications for Svelte be found
-[here](https://github.com/flagsmith/flagsmith-js-client/tree/main/examples/svelte).
+Example applications for Svelte be found [here](https://github.com/flagsmith/flagsmith-js-examples/tree/main/svelte).
 
 An example application for Next.js middleware can be found
-[here](https://github.com/flagsmith/flagsmith-js-client/tree/main/examples/nextjs-middleware).
+[here](https://github.com/flagsmith/flagsmith-js-examples/tree/main/nextjs-middleware).
 
 ## Installation
 
@@ -41,11 +40,9 @@ SDK. The main difference is that Flagsmith should be imported from `flagsmith/is
 The main flow with Next.js and any JavaScript-based SSR can be as follows:
 
 - 1: Fetch the flags on the server, optionally passing an identity to
-  [flagsmith.init({})](https://docs.flagsmith.com/clients/javascript#initialisation-options)
-- 2: Pass the resulting state to the client with
-  [flagsmith.getState()](https://docs.flagsmith.com/clients/javascript#available-functions)
-- 3: Initialise flagsmith on the client with
-  [flagsmith.setState(state)](https://docs.flagsmith.com/clients/javascript#available-functions)
+  [flagsmith.init({})](/clients/javascript#initialisation-options)
+- 2: Pass the resulting state to the client with [flagsmith.getState()](/clients/javascript#available-functions)
+- 3: Initialise flagsmith on the client with [flagsmith.setState(state)](/clients/javascript#available-functions)
 
 ### Example: Initialising the SDK with Next.js
 
@@ -54,7 +51,7 @@ state.
 
 ```javascript
 import { FlagsmithProvider } from 'flagsmith/react';
-import flagsmith from 'flagsmith/isomorphic';
+import flagsmith, { createFlagsmithInstance } from 'flagsmith/isomorphic';
 function MyApp({ Component, pageProps, flagsmithState }) {
  return (
   <FlagsmithProvider flagsmith={flagsmith} serverState={flagsmithState}>
@@ -64,14 +61,15 @@ function MyApp({ Component, pageProps, flagsmithState }) {
 }
 
 MyApp.getInitialProps = async () => {
- // this could be getStaticProps too depending on your build flow
- // calls page's `getInitialProps` and fills `appProps.pageProps`
- await flagsmith.init({
+ // This could be getStaticProps too depending on your build flow.
+ // Using createFlagsmithInstance rather than flagsmith here is only necessary if your servers allow for concurrent requests to getInitialProps.
+ const flagsmithSSR = createFlagsmithInstance();
+ await flagsmithSSR.init({
   // fetches flags on the server
   environmentID: '<YOUR_ENVIRONMENT_ID>',
   identity: 'my_user_id', // optionaly specify the identity of the user to get their specific flags
  });
- return { flagsmithState: flagsmith.getState() };
+ return { flagsmithState: flagsmithSSR.getState() };
 };
 
 export default MyApp;

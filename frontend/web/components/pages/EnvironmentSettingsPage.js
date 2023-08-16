@@ -5,6 +5,7 @@ import ConfigProvider from 'common/providers/ConfigProvider'
 import withWebhooks from 'common/providers/withWebhooks'
 import CreateWebhookModal from 'components/modals/CreateWebhook'
 import ConfirmRemoveWebhook from 'components/modals/ConfirmRemoveWebhook'
+import ConfirmToggleEnvFeature from 'components/modals/ConfirmToggleEnvFeature'
 import EditPermissions from 'components/EditPermissions'
 import ServerSideSDKKeys from 'components/ServerSideSDKKeys'
 import PaymentModal from 'components/modals/Payment'
@@ -14,6 +15,7 @@ import JSONReference from 'components/JSONReference'
 import ColourSelect from 'components/tags/ColourSelect'
 import Constants from 'common/constants'
 import Switch from 'components/Switch'
+import Icon from 'components/Icon'
 
 const showDisabledFlagOptions = [
   { label: 'Inherit from Project', value: null },
@@ -60,6 +62,7 @@ const EnvironmentSettingsPage = class extends Component {
     openModal(
       'Remove Environment',
       <ConfirmRemoveEnvironment environment={environment} cb={cb} />,
+      'p-0',
     )
   }
 
@@ -95,11 +98,13 @@ const EnvironmentSettingsPage = class extends Component {
         banner_text: this.state.banner_text,
         description: description || env.description,
         hide_disabled_flags: this.state.hide_disabled_flags,
+        hide_sensitive_data: !!this.state.hide_sensitive_data,
         minimum_change_request_approvals: has4EyesPermission
           ? this.state.minimum_change_request_approvals
           : null,
         name: name || env.name,
-        use_mv_v2_evaluation: !!this.state.use_mv_v2_evaluation,
+        use_identity_composite_key_for_hashing:
+          !!this.state.use_identity_composite_key_for_hashing,
       }),
     )
   }
@@ -123,8 +128,7 @@ const EnvironmentSettingsPage = class extends Component {
         projectId={this.props.match.params.projectId}
         save={this.props.createWebhook}
       />,
-      null,
-      { className: 'alert fade expand' },
+      'side-modal',
     )
   }
 
@@ -139,8 +143,7 @@ const EnvironmentSettingsPage = class extends Component {
         projectId={this.props.match.params.projectId}
         save={this.props.saveWebhook}
       />,
-      null,
-      { className: 'alert fade expand' },
+      'side-modal',
     )
   }
 
@@ -153,13 +156,34 @@ const EnvironmentSettingsPage = class extends Component {
         url={webhook.url}
         cb={() => this.props.deleteWebhook(webhook)}
       />,
+      'p-0',
+    )
+  }
+
+  confirmToggle = (description, feature, featureValue) => {
+    openModal(
+      'Enable "Hide Sensitive Data"',
+      <ConfirmToggleEnvFeature
+        description={description}
+        feature={feature}
+        featureValue={featureValue}
+        onToggleChange={(value) => {
+          this.setState({ hide_sensitive_data: value }, this.saveEnv)
+          closeModal()
+        }}
+      />,
     )
   }
 
   render() {
     const {
       props: { webhooks, webhooksLoading },
-      state: { allow_client_traits, name, use_mv_v2_evaluation },
+      state: {
+        allow_client_traits,
+        hide_sensitive_data,
+        name,
+        use_identity_composite_key_for_hashing,
+      },
     } = this
     const has4EyesPermission = Utils.getPlansPermission('4_EYES')
 
@@ -185,13 +209,15 @@ const EnvironmentSettingsPage = class extends Component {
                   banner_colour: env.banner_colour || Constants.tagColors[0],
                   banner_text: env.banner_text,
                   hide_disabled_flags: env.hide_disabled_flags,
+                  hide_sensitive_data: !!env.hide_sensitive_data,
                   minimum_change_request_approvals: Utils.changeRequestsEnabled(
                     env.minimum_change_request_approvals,
                   )
                     ? env.minimum_change_request_approvals
                     : null,
                   name: env.name,
-                  use_mv_v2_evaluation: !!env.use_mv_v2_evaluation,
+                  use_identity_composite_key_for_hashing:
+                    !!env.use_identity_composite_key_for_hashing,
                 })
               }, 10)
             }
@@ -203,8 +229,8 @@ const EnvironmentSettingsPage = class extends Component {
                   </div>
                 )}
                 {!isLoading && (
-                  <Tabs inline transparent uncontrolled>
-                    <TabItem tabLabel='General' tabIcon='ion-md-settings'>
+                  <Tabs uncontrolled>
+                    <TabItem tabLabel='General'>
                       <div className='mt-4'>
                         <JSONReference title={'Environment'} json={env} />
                         <div>
@@ -246,8 +272,7 @@ const EnvironmentSettingsPage = class extends Component {
                                       : env.description
                                   }
                                   inputProps={{
-                                    className: 'input--wide',
-                                    style: { minHeight: 100 },
+                                    className: 'input--wide textarea-lg',
                                   }}
                                   onChange={(e) =>
                                     this.setState({
@@ -266,6 +291,7 @@ const EnvironmentSettingsPage = class extends Component {
                                 <Button
                                   id='save-env-btn'
                                   className='float-right mb-4'
+                                  type='submit'
                                   disabled={this.saveDisabled()}
                                 >
                                   {isSaving ? 'Updating' : 'Update'}
@@ -277,8 +303,8 @@ const EnvironmentSettingsPage = class extends Component {
                         <div>
                           <Row space>
                             <div className='col-md-8 pl-0'>
-                              <h3 className='m-b-0'>Environment Banner</h3>
-                              <p className='mb-0'>
+                              <h5 className='m-b-0'>Environment Banner</h5>
+                              <p className='fs-small lh-sm mb-0'>
                                 This will show a banner whenever you view its
                                 pages, this is generally used to warn people
                                 that they are viewing and editing a sensitive
@@ -321,53 +347,103 @@ const EnvironmentSettingsPage = class extends Component {
                                   }
                                 />
                               </div>
-                              <Button onClick={this.saveEnv} className='ml-2'>
+                              <Button
+                                onClick={this.saveEnv}
+                                className='ml-2'
+                                size='small'
+                              >
                                 Save
                               </Button>
                             </Row>
                           )}
                         </div>
+                        {Utils.getFlagsmithHasFeature(
+                          'configure_hide_sensitive_data',
+                        ) && (
+                          <div>
+                            <Row space style={{ marginTop: '1.5rem' }}>
+                              <div className='col-md-8 pl-0'>
+                                <h5 className='m-b-0'>Hide sensitive data</h5>
+                                <p className='fs-small lh-sm'>
+                                  Exclude sensitive data from endpoints
+                                  returning flags and identity information to
+                                  the SDKs or via our REST API. For full
+                                  information on the excluded fields see
+                                  documentation{' '}
+                                  <Button
+                                    theme='text'
+                                    href='https://docs.flagsmith.com/system-administration/security#hide-sensitive-data'
+                                    target='_blank'
+                                  >
+                                    here.
+                                  </Button>
+                                  <br />
+                                  <strong>
+                                    Warning! Enabling this feature will change
+                                    the response from the API and could break
+                                    your existing code.
+                                  </strong>
+                                </p>
+                              </div>
+                              <div className='col-md-4 pr-0 text-right'>
+                                <div>
+                                  <Switch
+                                    className='float-right'
+                                    checked={hide_sensitive_data}
+                                    onChange={(v) => {
+                                      this.confirmToggle(
+                                        'The data returned from the API will change and could break your existing code. Are you sure that you want to change this value?',
+                                        'hide_sensitive_data',
+                                        hide_sensitive_data,
+                                      )
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </Row>
+                          </div>
+                        )}
                         <FormGroup className='mt-4'>
                           <Row space>
                             <div className='col-md-8 pl-0'>
-                              <h3 className='m-b-0'>Change Requests</h3>
+                              <h5 className='m-b-0'>Change Requests</h5>
                               {!has4EyesPermission ? (
-                                <p>
+                                <p className='fs-small lh-sm'>
                                   View and manage your feature changes with a
                                   Change Request flow with our{' '}
-                                  <a
-                                    href='#'
+                                  <Button
+                                    theme='text'
                                     onClick={() => {
                                       openModal(
                                         'Payment plans',
                                         <PaymentModal viewOnly={false} />,
-                                        null,
-                                        { large: true },
+                                        'modal-lg',
                                       )
                                     }}
                                   >
                                     Scale-up plan
-                                  </a>
+                                  </Button>
                                   . Find out more{' '}
-                                  <a
+                                  <Button
+                                    theme='text'
                                     href='https://docs.flagsmith.com/advanced-use/change-requests'
                                     target='_blank'
-                                    rel='noreferrer'
                                   >
                                     here
-                                  </a>
+                                  </Button>
                                   .
                                 </p>
                               ) : (
-                                <p>
+                                <p className='fs-small lh-sm'>
                                   Require a minimum number of people to approve
                                   changes to features.{' '}
-                                  <ButtonLink
+                                  <Button
+                                    theme='text'
                                     href='https://docs.flagsmith.com/advanced-use/change-requests'
                                     target='_blank'
                                   >
                                     Learn about Change Requests.
-                                  </ButtonLink>
+                                  </Button>
                                 </p>
                               )}
                             </div>
@@ -447,47 +523,43 @@ const EnvironmentSettingsPage = class extends Component {
                               </div>
                             )}
                         </FormGroup>
-                        {Utils.getFlagsmithHasFeature('delete_environment') && (
-                          <FormGroup className='mt-4'>
-                            <Row className='mt-4' space>
-                              <div className='col-md-8 pl-0'>
-                                <h3>Delete Environment</h3>
-                                <p>
-                                  This environment will be permanently deleted.
-                                </p>
-                              </div>
-                              <Button
-                                id='delete-env-btn'
-                                onClick={() =>
-                                  this.confirmRemove(
-                                    _.find(project.environments, {
-                                      api_key:
-                                        this.props.match.params.environmentId,
-                                    }),
-                                    () => {
-                                      deleteEnv(
-                                        _.find(project.environments, {
-                                          api_key:
-                                            this.props.match.params
-                                              .environmentId,
-                                        }),
-                                      )
-                                    },
-                                  )
-                                }
-                                className='btn btn--with-icon ml-auto btn--remove'
-                              >
-                                <RemoveIcon />
-                              </Button>
-                            </Row>
-                          </FormGroup>
-                        )}
+                        <FormGroup className='mt-4'>
+                          <Row className='mt-4' space>
+                            <div className='col-md-8 pl-0'>
+                              <h5>Delete Environment</h5>
+                              <p className='fs-small lh-sm'>
+                                This environment will be permanently deleted.
+                              </p>
+                            </div>
+                            <Button
+                              id='delete-env-btn'
+                              onClick={() =>
+                                this.confirmRemove(
+                                  _.find(project.environments, {
+                                    api_key:
+                                      this.props.match.params.environmentId,
+                                  }),
+                                  () => {
+                                    deleteEnv(
+                                      _.find(project.environments, {
+                                        api_key:
+                                          this.props.match.params.environmentId,
+                                      }),
+                                    )
+                                  },
+                                )
+                              }
+                              className='btn btn--with-icon ml-auto btn--remove'
+                            >
+                              <RemoveIcon />
+                            </Button>
+                          </Row>
+                        </FormGroup>
                       </div>
                     </TabItem>
                     <TabItem
                       data-test='js-sdk-settings'
                       tabLabel='SDK Settings'
-                      tabIcon='ion-md-code'
                     >
                       <div className='mt-4'>
                         <JSONReference title={'Environment'} json={env} />
@@ -498,10 +570,10 @@ const EnvironmentSettingsPage = class extends Component {
                             ) && (
                               <Row className='mb-4' space>
                                 <div className='col-md-8 pl-0'>
-                                  <h3 className='m-b-0'>
+                                  <h5 className='m-b-0'>
                                     Hide disabled flags from SDKs
-                                  </h3>
-                                  <p className='mb-0'>
+                                  </h5>
+                                  <p className='mb-0  fs-small lh-sm'>
                                     To prevent letting your users know about
                                     your upcoming features and to cut down on
                                     payload, enabling this will prevent the API
@@ -515,9 +587,8 @@ const EnvironmentSettingsPage = class extends Component {
                                     .
                                   </p>
                                 </div>
-                                <div className='col-md-3 text-right'>
+                                <div className='col-md-3'>
                                   <Select
-                                    className={'text-left'}
                                     value={
                                       showDisabledFlagOptions.find(
                                         (v) =>
@@ -540,10 +611,10 @@ const EnvironmentSettingsPage = class extends Component {
                             )}
                             <Row className='mt-4' space>
                               <div className='col-md-8 pl-0'>
-                                <h3 className='m-b-0'>
+                                <h5 className='m-b-0'>
                                   Allow client SDKs to set user traits
-                                </h3>
-                                <p>
+                                </h5>
+                                <p className='fs-small lh-sm'>
                                   Disabling this option will prevent client SDKs
                                   from using the client key from setting traits.
                                 </p>
@@ -563,18 +634,19 @@ const EnvironmentSettingsPage = class extends Component {
                                 </div>
                               </div>
                               {Utils.getFlagsmithHasFeature(
-                                'mv_v2_setting',
+                                'consistent_hashing_setting',
                               ) && (
                                 <>
                                   <Row className='mt-4' space>
                                     <div className='col-md-8 pl-0'>
-                                      <h3 className='m-b-0'>
-                                        Use V2 Multivariate Evaluations
-                                      </h3>
-                                      <p>
+                                      <h5 className='m-b-0'>
+                                        Use Consistent Hashing
+                                      </h5>
+                                      <p className='fs-small lh-sm'>
                                         Enabling this setting will ensure that
-                                        multivariate evaluations made by the API
-                                        are consistent with those made by local
+                                        multivariate and percentage split
+                                        evaluations made by the API are
+                                        consistent with those made by local
                                         evaluation mode in our server side SDKs.
                                       </p>
                                     </div>
@@ -582,10 +654,15 @@ const EnvironmentSettingsPage = class extends Component {
                                       <div>
                                         <Switch
                                           className='float-right'
-                                          checked={use_mv_v2_evaluation}
+                                          checked={
+                                            use_identity_composite_key_for_hashing
+                                          }
                                           onChange={(v) => {
                                             this.setState(
-                                              { use_mv_v2_evaluation: v },
+                                              {
+                                                use_identity_composite_key_for_hashing:
+                                                  v,
+                                              },
                                               this.saveEnv,
                                             )
                                           }}
@@ -593,15 +670,15 @@ const EnvironmentSettingsPage = class extends Component {
                                       </div>
                                     </div>
                                   </Row>
-                                  <span className='text-danger'>
-                                    Warning: Toggling V2 Multivariate
-                                    Evaluations will mean that some users will
-                                    start receiving different multivariate
-                                    values via the API / remote evaluation for
-                                    any existing multivariate features that you
-                                    have. Values received in local evaluation
-                                    mode will not change.
-                                  </span>
+                                  <p className='text-danger  fs-small lh-sm'>
+                                    Warning: Toggling this setting will mean
+                                    that some users will start receiving
+                                    different values for multivariate flags and
+                                    flags with a percentage split segment
+                                    override via the API / remote evaluation.
+                                    Values received in local evaluation mode
+                                    will not change.
+                                  </p>
                                 </>
                               )}
                             </Row>
@@ -609,9 +686,9 @@ const EnvironmentSettingsPage = class extends Component {
                         </div>
                       </div>
                     </TabItem>
-                    <TabItem tabLabel='Keys' tabIcon='ion-md-key'>
+                    <TabItem tabLabel='Keys'>
                       <FormGroup className='mt-4'>
-                        <h3>Client-side Environment Key</h3>
+                        <h5>Client-side Environment Key</h5>
                         <div className='row'>
                           <div className='col-md-6'>
                             <Row>
@@ -643,7 +720,7 @@ const EnvironmentSettingsPage = class extends Component {
                         environmentId={this.props.match.params.environmentId}
                       />
                     </TabItem>
-                    <TabItem tabLabel='Members' tabIcon='ion-md-people'>
+                    <TabItem tabLabel='Members'>
                       <FormGroup>
                         <EditPermissions
                           tabClassName='flat-panel'
@@ -656,21 +733,22 @@ const EnvironmentSettingsPage = class extends Component {
                         />
                       </FormGroup>
                     </TabItem>
-                    <TabItem tabLabel='Webhooks' tabIcon='ion-md-cloud'>
+                    <TabItem tabLabel='Webhooks'>
                       <FormGroup className='mt-4'>
                         <Row className='mb-3' space>
                           <div className='col-md-8 pl-0'>
-                            <h3 className='m-b-0'>Feature Webhooks</h3>
-                            <p>
+                            <h5 className='m-b-0'>Feature Webhooks</h5>
+                            <p className='fs-small lh-sm'>
                               Feature webhooks let you know when features have
                               changed. You can configure 1 or more Feature
                               Webhooks per Environment.{' '}
-                              <ButtonLink
-                                href='https://docs.flagsmith.com/advanced-use/system-administration#web-hooks'
+                              <Button
+                                theme='text'
+                                href='https://docs.flagsmith.com/system-administration/webhooks#environment-web-hooks'
                                 target='_blank'
                               >
                                 Learn about Feature Webhooks.
-                              </ButtonLink>
+                              </Button>
                             </p>
                           </div>
                           <div className='col-md-4 pr-0'>
@@ -690,10 +768,9 @@ const EnvironmentSettingsPage = class extends Component {
                             title={
                               <Tooltip
                                 title={
-                                  <h6 className='mb-0'>
-                                    Webhooks{' '}
-                                    <span className='icon ion-ios-information-circle' />
-                                  </h6>
+                                  <h5 className='mb-0'>
+                                    Webhooks <Icon name='info-outlined' />
+                                  </h5>
                                 }
                                 place='right'
                               >
@@ -701,7 +778,6 @@ const EnvironmentSettingsPage = class extends Component {
                               </Tooltip>
                             }
                             className='no-pad'
-                            icon='ion-md-cloud'
                             items={webhooks}
                             renderRow={(webhook) => (
                               <Row
@@ -712,18 +788,22 @@ const EnvironmentSettingsPage = class extends Component {
                                 className='list-item clickable cursor-pointer'
                                 key={webhook.id}
                               >
-                                <div>
-                                  <ButtonLink>{webhook.url}</ButtonLink>
-                                  <div className='list-item-footer faint'>
+                                <Flex className='table-column px-3'>
+                                  <div className='font-weight-medium mb-1'>
+                                    {webhook.url}
+                                  </div>
+                                  <div className='list-item-subtitle'>
                                     Created{' '}
-                                    {moment(webhook.created_date).format(
+                                    {moment(webhook.created_at).format(
                                       'DD/MMM/YYYY',
                                     )}
                                   </div>
-                                </div>
-                                <Row>
+                                </Flex>
+                                <div className='table-column'>
                                   <Switch checked={webhook.enabled} />
-                                  <button
+                                </div>
+                                <div className='table-column'>
+                                  <Button
                                     id='delete-invite'
                                     type='button'
                                     onClick={(e) => {
@@ -731,24 +811,27 @@ const EnvironmentSettingsPage = class extends Component {
                                       e.preventDefault()
                                       this.deleteWebhook(webhook)
                                     }}
-                                    className='btn btn--with-icon ml-auto btn--remove'
+                                    className='btn btn-with-icon'
                                   >
-                                    <RemoveIcon />
-                                  </button>
-                                </Row>
+                                    <Icon
+                                      name='trash-2'
+                                      width={20}
+                                      fill='#656D7B'
+                                    />
+                                  </Button>
+                                </div>
                               </Row>
                             )}
                             renderNoResults={
                               <Panel
                                 id='users-list'
-                                icon='ion-md-cloud'
+                                className='no-pad'
                                 title={
                                   <Tooltip
                                     title={
-                                      <h6 className='mb-0'>
-                                        Webhooks{' '}
-                                        <span className='icon ion-ios-information-circle' />
-                                      </h6>
+                                      <h5 className='mb-0'>
+                                        Webhooks <Icon name='info-outlined' />
+                                      </h5>
                                     }
                                     place='right'
                                   >
@@ -756,8 +839,12 @@ const EnvironmentSettingsPage = class extends Component {
                                   </Tooltip>
                                 }
                               >
-                                You currently have no Feature Webhooks
-                                configured for this Environment.
+                                <div className='search-list'>
+                                  <Row className='list-item p-3 text-muted'>
+                                    You currently have no Feature Webhooks
+                                    configured for this Environment.
+                                  </Row>
+                                </div>
                               </Panel>
                             }
                             isLoading={this.props.webhookLoading}

@@ -208,6 +208,10 @@ export default {
       'React Native': 'javascript',
     },
   },
+  colours: {
+    primary: '#6837fc',
+    white: '#ffffff',
+  },
   defaultRule: {
     operator: 'EQUAL',
     property: '',
@@ -260,7 +264,6 @@ export default {
       'event': 'Organisation deleted',
     },
     'DELETE_USER': { 'category': 'Organisation', 'event': 'User deleted' },
-    'DEMO_ACCOUNT': { 'category': 'User', 'event': 'User demo login' },
     'EDIT_ENVIRONMENT': {
       'category': 'Environment',
       'event': 'Environment edited',
@@ -277,7 +280,6 @@ export default {
     },
     'INVITE': { 'category': 'Invite', 'event': 'Invite sent' },
     'LOGIN': { 'category': 'User', 'event': 'User login' },
-    'LOGIN_DEMO': { 'category': 'User', 'event': 'User demo login' },
     'OAUTH': (type: OAuthType) => ({
       'category': 'User',
       'event': `User oauth ${type}`,

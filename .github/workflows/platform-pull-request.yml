@@ -3,10 +3,33 @@ name: Platform Pull Requests
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - docs/**
+      - infrastructure/**
 
 jobs:
+  validate-pr-title:
+    name: Validate Conventional Commit title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: | # mirrors changelog-sections in the /release-please-config.json
+            fix
+            feat
+            infra
+            docs
+            chore
+            build
+            deps
+            ci
+            refactor
+            style
+            test
+
   run-e2e-tests:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     name: Full E2E tests
 
@@ -42,20 +65,28 @@ jobs:
           slack_token: ${{ secrets.SLACK_TOKEN }}
           environment: local
 
-      - name: Output API logs
+      - name: Output API container status and logs
         if: failure()
         env:
           API_CONTAINER_ID: ${{ steps.run-local-api.outputs.containerId }}
-        run: docker logs $API_CONTAINER_ID
+        run: |
+          docker inspect $API_CONTAINER_ID | jq '.[0].State'
+          docker logs $API_CONTAINER_ID
 
   run-e2e-tests-docker-unified:
-    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     name: Full E2E tests with unified image in Docker
 
     steps:
       - name: Cloning repo
         uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Run docker-compose with unified-image
         working-directory: frontend
@@ -64,6 +95,7 @@ jobs:
           ENV: staging
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           STATIC_ASSET_CDN_URL: /
+          GITHUB_ACTION_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           docker-compose -f docker-compose-e2e-tests.yml build
           docker-compose -f docker-compose-e2e-tests.yml run frontend npm run test
@@ -137,59 +169,3 @@ jobs:
           context: frontend/
           push: false
           tags: flagsmith/flagsmith-frontend:testing
-
-  web-deploy-branch-production:
-    # don't run this on PRs from forks (as the secrets are not available)
-    if: github.event.pull_request.head.repo.full_name == 'Flagsmith/flagsmith'
-    concurrency:
-      group: deploy-frontend-production-${{github.ref}}
-      cancel-in-progress: true
-    name: Vercel Production Deployment
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Cloning repo
-        uses: actions/checkout@v3
-
-      - name: Determine Branch
-        id: branches
-        uses: transferwise/sanitize-branch-name@v1
-
-      - name: Deploy
-        uses: ./.github/actions/vercel-preview-deploy
-        with:
-          vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel_token: ${{ secrets.VERCEL_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          alias: flagsmith-${{ steps.branches.outputs.sanitized-branch-name }}
-          deployment_description: 'Production preview deployment'
-          env: prod
-
-  web-deploy-branch-staging:
-    # don't run this on PRs from forks (as the secrets are not available)
-    if: github.event.pull_request.head.repo.full_name == 'Flagsmith/flagsmith'
-    concurrency:
-      group: deploy-frontend-staging-${{github.ref}}
-      cancel-in-progress: true
-    name: Vercel Staging Deployment
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Cloning repo
-        uses: actions/checkout@v3
-
-      - name: Determine Branch
-        id: branches
-        uses: transferwise/sanitize-branch-name@v1
-
-      - name: Deploy
-        uses: ./.github/actions/vercel-preview-deploy
-        with:
-          vercel_project_id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel_token: ${{ secrets.VERCEL_TOKEN }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          alias: flagsmith-staging-${{ steps.branches.outputs.sanitized-branch-name }}
-          deployment_description: 'Staging preview deployment'
-          env: staging

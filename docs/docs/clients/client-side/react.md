@@ -10,9 +10,9 @@ re-renders.
 
 Example applications for a variety of React, React Native and Next.js can be found here:
 
-- [Usage with React](https://github.com/Flagsmith/flagsmith-js-client/tree/main/examples/react)
-- [Usage with React Native](https://github.com/Flagsmith/flagsmith-js-client/tree/main/examples/react)
-- [Usage with Next.js](https://github.com/Flagsmith/flagsmith-js-client/tree/main/examples/nextjs)
+- [Usage with React](https://github.com/Flagsmith/flagsmith-js-examples/tree/main/react)
+- [Usage with React Native](https://github.com/Flagsmith/flagsmith-js-examples/tree/main/react)
+- [Usage with Next.js](https://github.com/Flagsmith/flagsmith-js-examples/tree/main/nextjs)
 
 ## Installation
 
@@ -76,8 +76,8 @@ Providing options to the Flagsmith provider will initialise the client, the API 
 **Advanced usage: Initialising before rendering the FlagsmithProvider**
 
 If you wish to initialise the Flagsmith client before React rendering (e.g. in redux, or SSR) you can do so by calling
-[flagsmith.init](https://docs.flagsmith.com/clients/javascript#example-initialising-the-sdk) and provide no options
-property to the FlagsmithProvider component.
+[flagsmith.init](/clients/javascript#example-initialising-the-sdk) and provide no options property to the
+FlagsmithProvider component.
 
 ### Step 2: Using useFlags to access feature values and enabled state
 
@@ -144,6 +144,16 @@ export function MyComponent() {
 
 ## useFlagsmith API Reference
 
+This allows you to access the SDK instance that is used within the FlagsmithProvider.
+
 ```javascript
 useFlagsmith()=> IFlagsmith
+```
+
+## useFlagsmithLoading API Reference
+
+This hook allows you to access the [SDK loading state](javascript#flagsmith-loading-state).
+
+```javascript
+useFlagsmithLoading()=> LoadingState
 ```

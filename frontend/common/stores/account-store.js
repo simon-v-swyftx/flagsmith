@@ -10,7 +10,16 @@ const controller = {
     API.setInviteType('')
     return data
       .post(`${Project.api}users/join/link/${id}/`)
-      .catch(() => data.post(`${Project.api}users/join/${id}/`))
+      .catch((error) => {
+        if (
+          Utils.getFlagsmithHasFeature('verify_seats_limit_for_invite_links') &&
+          error.status === 400
+        ) {
+          API.ajaxHandler(store, error)
+          return
+        }
+        return data.post(`${Project.api}users/join/${id}/`)
+      })
       .then((res) => {
         store.savedId = res.id
         store.model.organisations.push(res)
@@ -147,14 +156,8 @@ const controller = {
         password,
       })
       .then((res) => {
-        const isDemo = email === Project.demoAccount.email
-        store.isDemo = isDemo
-        if (isDemo) {
-          AsyncStorage.setItem('isDemo', `${isDemo}`)
-          API.trackEvent(Constants.events.LOGIN_DEMO)
-        } else {
-          API.trackEvent(Constants.events.LOGIN)
-        }
+        API.trackEvent(Constants.events.LOGIN)
+
         if (res.ephemeral_token) {
           store.ephemeral_token = res.ephemeral_token
           store.model = {
@@ -265,13 +268,9 @@ const controller = {
   setToken: (token) => {
     store.loading()
     store.user = {}
-    AsyncStorage.getItem('isDemo', (err, res) => {
-      if (res) {
-        store.isDemo = true
-      }
-      data.setToken(token)
-      return controller.onLogin()
-    })
+
+    data.setToken(token)
+    return controller.onLogin()
   },
 
   setUser(user) {
@@ -306,17 +305,14 @@ const controller = {
       }
 
       AsyncStorage.setItem('user', JSON.stringify(store.model))
-      if (!store.isDemo) {
-        API.alias(user.email)
-        API.identify(user && user.email, user)
-      }
+      API.alias(user.email, user)
+      API.identify(user && user.email, user)
       store.loaded()
     } else if (!user) {
       store.ephemeral_token = null
       AsyncStorage.clear()
       API.setCookie('t', '')
       data.setToken(null)
-      store.isDemo = false
       store.model = user
       store.organisation = null
       store.trigger('logout')
@@ -422,6 +418,9 @@ const store = Object.assign({}, BaseStore, {
   },
   getOrganisations() {
     return store.model && store.model.organisations
+  },
+  getPaymentMethod() {
+    return store.organisation?.subscription?.payment_method
   },
   getPlans() {
     if (!store.model) return []

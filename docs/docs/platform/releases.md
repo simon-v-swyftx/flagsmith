@@ -1,13 +1,16 @@
 # Releases
 
-We have a fairly simple tagging strategy:
+We follow the [SemVer](https://semver.org/) version naming strategy strategy.
 
-- Git tags created from the `main` branch trigger Docker image builds tagged `latest`.
-- Git tags e.g. `2.7.1` will trigger Docker image builds tagged:
-  - `2.7.1`
-  - `2.7`
+Please follow our [Github Releases](https://github.com/Flagsmith/flagsmith/releases) page for detailed change logs.
 
-Please look out our [Github Releases](https://github.com/Flagsmith/flagsmith/releases) page for detailed change logs.
+:::important
+
+This page is no longer being updated. Please refer to our
+[Github Releases](https://github.com/Flagsmith/flagsmith/releases) and
+[Changelog](https://github.com/Flagsmith/flagsmith/blob/main/CHANGELOG.md) pages for detailed change logs.
+
+:::
 
 ## v2.48
 
@@ -110,7 +113,7 @@ Released **11 November 2022**
 - Prevent invite links creation in the API
 - Make master API keys read only
 
-## v2.35
+## v2.35
 
 Released **8 November 2022**
 
@@ -148,7 +151,7 @@ Released **6 October 2022**
 - Add fix for testing webhooks in UI when webhook has basic authentication
 - Add MV options support for Terraform
 
-## v2.31
+## v2.31
 
 Released **29 September 2022**
 
@@ -435,8 +438,8 @@ Released **9 Nov 2020**
 We've added a bunch of new features and bug fixes.
 
 - You can now tag flags with user-defined tags. You can use these tags to manage flags and organise them.
-- Beta release of both [Data Dog](https://docs.flagsmith.com/integrations/datadog/) and
-  [Amplitude](https://docs.flagsmith.com/integrations/amplitude/) integrations.
+- Beta release of both [Data Dog](/integrations/apm/datadog) and [Amplitude](/integrations/analytics/amplitude)
+  integrations.
 - You can now set multiple traits in a single call
 - For a given feature, show which Identities have it individually overridden
 - When viewing an Identity, show the segments and test whether the identity is a member of each segment

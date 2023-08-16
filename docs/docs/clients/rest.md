@@ -30,11 +30,37 @@ You can view the API via Swagger at [https://api.flagsmith.com/api/v1/docs/](htt
 get OpenAPI as [JSON](https://api.flagsmith.com/api/v1/docs/?format=.json) or
 [YAML](https://api.flagsmith.com/api/v1/docs/?format=.yaml).
 
-## Environment Key
+## API Keys
+
+### Public API Endpoints
 
 Publicly accessible API calls need to have an environment key supplied with each request. This is provided as an HTTP
 header, with the name `X-Environment-Key` and the value of the Environment Key that you can find within the Flagsmith
 administrative area.
+
+### Private API Endpoints
+
+You can also do things like create new flags, environments, toggle flags or indeed anything that is possible from the
+administrative front end via the API.
+
+To authenticate, you can use the API Token associated with your account. This can be found in the "Account" page from
+the top navigation panel. You need to provide the token as an HTTP header of the form:
+
+```bash
+authorization: Token <API TOKEN FROM ACCOUNT PAGE>
+```
+
+For example, to create a new Environment:
+
+```bash
+curl 'https://api.flagsmith.com/api/v1/environments/' \
+    -H 'content-type: application/json' \
+    -H 'authorization: Token <API TOKEN FROM ACCOUNT PAGE>' \
+    --data-binary '{"name":"New Environment","project":"<Project ID>"}'
+```
+
+You can find a complete list of endpoints via the Swagger REST API at
+[https://api.flagsmith.com/api/v1/docs/](https://api.flagsmith.com/api/v1/docs/).
 
 ## Curl Examples
 
@@ -73,24 +99,6 @@ curl --request POST 'https://edge.api.flagsmith.com/api/v1/identities/' \
 }'
 ```
 
-## Private Endpoints
-
-You can also do things like create new flags, environments, toggle flags or indeed anything that is possible from the
-administrative front end via the API.
-
-To authenticate, you can use the token associated with your account. This can be found in the "Account" page from the
-top right navigation panel. Use this token for API calls. For example, to create a new evironment:
-
-```bash
-curl 'https://api.flagsmith.com/api/v1/environments/' \
-    -H 'content-type: application/json' \
-    -H 'authorization: Token <TOKEN FROM PREVIOUS STEP>' \
-    --data-binary '{"name":"New Environment","project":"<Project ID>"}'
-```
-
-You can find a complete list of endpoints via the Swagger REST API at
-[https://api.flagsmith.com/api/v1/docs/](https://api.flagsmith.com/api/v1/docs/).
-
 ## JSON View
 
 You can enable the JSON view in your account settings page. This will then give you access to relevant object meta data
@@ -100,7 +108,7 @@ in the Flag area of the dashboard:
 
 ## Code Examples
 
-Below are some simple examples for achieving certain actions with the REST API, using python.
+Below are some examples for achieving certain actions with the REST API, using python.
 
 ### Create a feature
 
@@ -304,4 +312,51 @@ for identity in page_of_identities.json()['results']:
     IDENTITY_URL = f"{BASE_URL}/environments/{ENV_KEY}/edge-identities/{IDENTITY_UUID}/edge-featurestates/all/"
     identity_data = session.get(f"{IDENTITY_URL}")
     print(identity_data.json())
+```
+
+### Delete an Edge Identity
+
+```python
+import os
+
+import requests
+
+TOKEN = os.environ.get("API_TOKEN")  # obtained from Account section in dashboard
+ENV_KEY = os.environ.get("ENV_KEY")  # obtained from Environment settings in dashboard
+IDENTITY_UUDI = os.environ["IDENTITY_UUDI"] # must (currently) be obtained by inspecting the request to /api/v1/environments/{ENV_KEY}/edge-identities/{IDENTITY_UUDI} in the network console
+BASE_URL = "https://edge.api.flagsmith.com/api/v1"  # update this if self hosting
+
+session = requests.Session()
+session.headers.update(
+    {"Authorization": f"Token {TOKEN}", "Content-Type": "application/json"}
+)
+
+# delete the existing edge identity based on the uuid
+delete_edge_identity_url = f"{BASE_URL}/environments/{ENV_KEY}/edge-identities/{IDENTITY_UUDI}/"
+delete_edge_identity_response = session.delete(delete_edge_identity_url)
+assert delete_edge_identity_response.status_code == 204
+
+```
+
+### Delete an Identity
+
+```python
+import os
+
+import requests
+
+TOKEN = os.environ.get("API_TOKEN")  # obtained from Account section in dashboard
+ENV_KEY = os.environ.get("ENV_KEY")  # obtained from Environment settings in dashboard
+IDENTITY_ID = os.environ["IDENTITY_ID"] # obtain this from the URL on your dashboard when viewing an identity
+BASE_URL = "https://api.flagsmith.com/api/v1"  # update this if self hosting
+
+session = requests.Session()
+session.headers.update(
+    {"Authorization": f"Token {TOKEN}", "Content-Type": "application/json"}
+)
+
+# delete the existing identity based on the identity id
+delete_identity_url = f"{BASE_URL}/environments/{ENV_KEY}/identities/{IDENTITY_ID}/"
+delete_identity_response = session.delete(delete_identity_url)
+assert delete_identity_response.status_code == 204
 ```

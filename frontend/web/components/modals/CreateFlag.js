@@ -21,14 +21,16 @@ import AddEditTags from 'components/tags/AddEditTags'
 import FlagOwners from 'components/FlagOwners'
 import ChangeRequestModal from './ChangeRequestModal'
 import Feature from 'components/Feature'
-import { ButtonOutline } from 'components/base/forms/Button'
-import { setInterceptClose } from 'project/modals'
 import classNames from 'classnames'
 import InfoMessage from 'components/InfoMessage'
 import JSONReference from 'components/JSONReference'
 import ErrorMessage from 'components/ErrorMessage'
 import Permission from 'common/providers/Permission'
 import IdentitySelect from 'components/IdentitySelect'
+import { setInterceptClose } from './base/ModalDefault'
+import Icon from 'components/Icon'
+import ModalHR from './ModalHR'
+import FeatureValue from 'components/FeatureValue'
 
 const CreateFlag = class extends Component {
   static displayName = 'CreateFlag'
@@ -41,6 +43,7 @@ const CreateFlag = class extends Component {
       feature_state_value,
       hide_from_client,
       is_archived,
+      is_server_key_only,
       multivariate_options,
       name,
       tags,
@@ -76,6 +79,7 @@ const CreateFlag = class extends Component {
           ? undefined
           : Utils.getTypedValue(feature_state_value),
       is_archived,
+      is_server_key_only,
       multivariate_options: _.cloneDeep(multivariate_options),
       name,
       period: 30,
@@ -83,6 +87,7 @@ const CreateFlag = class extends Component {
       tab: Utils.fromParam().tab || 0,
       tags: tags || [],
     }
+    AppActions.getGroups(AccountStore.getOrganisation().id)
   }
 
   close() {
@@ -109,9 +114,9 @@ const CreateFlag = class extends Component {
               return {
                 ...v,
                 default_percentage_allocation:
-                  v.default_percentage_allocation ||
                   (matchingVariation &&
                     matchingVariation.percentage_allocation) ||
+                  v.default_percentage_allocation ||
                   0,
               }
             }),
@@ -129,7 +134,7 @@ const CreateFlag = class extends Component {
           this.state.settingsChanged
         ) {
           openConfirm(
-            'Are you sure',
+            'Are you sure?',
             'Closing this will discard your unsaved changes.',
             () => resolve(true),
             () => resolve(false),
@@ -192,10 +197,7 @@ const CreateFlag = class extends Component {
   }
 
   getFeatureUsage = () => {
-    if (
-      Utils.getFlagsmithHasFeature('flag_analytics') &&
-      this.props.environmentFlag
-    ) {
+    if (this.props.environmentFlag) {
       AppActions.getFeatureUsage(
         this.props.projectId,
         this.props.environmentFlag.environment,
@@ -219,6 +221,7 @@ const CreateFlag = class extends Component {
       hide_from_client,
       initial_value,
       is_archived,
+      is_server_key_only,
       name,
     } = this.state
     const projectFlag = {
@@ -259,6 +262,7 @@ const CreateFlag = class extends Component {
             hide_from_client,
             initial_value,
             is_archived,
+            is_server_key_only,
             multivariate_options: this.state.multivariate_options,
             name,
             tags: this.state.tags,
@@ -344,16 +348,16 @@ const CreateFlag = class extends Component {
         </BarChart>
       </ResponsiveContainer>
     ) : (
-      <div className='text-center'>
+      <div className='modal-caption fs-small lh-sm'>
         There has been no activity for this flag within the past month. Find out
         about Flag Analytics{' '}
-        <a
+        <Button
+          theme='text'
           target='_blank'
           href='https://docs.flagsmith.com/advanced-use/flag-analytics'
-          rel='noreferrer'
         >
           here
-        </a>
+        </Button>
         .
       </div>
     )
@@ -453,9 +457,7 @@ const CreateFlag = class extends Component {
     const is4EyesSegmentOverrides =
       is4Eyes && Utils.getFlagsmithHasFeature('4eyes_segment_overrides') //
     const project = ProjectStore.model
-    const caseSensitive =
-      Utils.getFlagsmithHasFeature('case_sensitive_flags') &&
-      project?.only_allow_lower_case_feature_names
+    const caseSensitive = project?.only_allow_lower_case_feature_names
     const regex = project?.feature_name_regex
     const controlValue = Utils.calculateControl(multivariate_options)
     const invalid =
@@ -474,7 +476,7 @@ const CreateFlag = class extends Component {
     const Settings = (projectAdmin, createFeature) => (
       <>
         {!identity && this.state.tags && (
-          <FormGroup className='mb-4 mr-3 ml-3'>
+          <FormGroup className='mb-4 setting'>
             <InputGroup
               title={identity ? 'Tags' : 'Tags (optional)'}
               tooltip={Constants.strings.TAGS_DESCRIPTION}
@@ -499,7 +501,7 @@ const CreateFlag = class extends Component {
           >
             {({ permission: projectAdmin }) =>
               projectAdmin && (
-                <FormGroup className='mb-4 mr-3 ml-3'>
+                <FormGroup className='mb-4 setting'>
                   <FlagOwners
                     projectId={this.props.projectId}
                     id={projectFlag.id}
@@ -509,7 +511,7 @@ const CreateFlag = class extends Component {
             }
           </Permission>
         )}
-        <FormGroup className='mb-4 mr-3 ml-3'>
+        <FormGroup className='mb-4 setting'>
           <InputGroup
             value={description}
             data-test='featureDesc'
@@ -529,43 +531,60 @@ const CreateFlag = class extends Component {
             placeholder="e.g. 'This determines what size the header is' "
           />
         </FormGroup>
+
+        {!identity && Utils.getFlagsmithHasFeature('is_server_key_only') && (
+          <FormGroup className='mb-4 setting'>
+            <Row>
+              <Switch
+                checked={this.state.is_server_key_only}
+                onChange={(is_server_key_only) =>
+                  this.setState({ is_server_key_only, settingsChanged: true })
+                }
+                className='ml-0'
+              />
+              <Tooltip
+                title={
+                  <label className='cols-sm-2 control-label mb-0 ml-3'>
+                    Server-side only <Icon name='info-outlined' />
+                  </label>
+                }
+              >
+                Prevent this feature from being accessed with client-side SDKs.
+              </Tooltip>
+            </Row>
+          </FormGroup>
+        )}
+
         {!identity && isEdit && (
-          <FormGroup className='mb-4 mr-3 ml-3'>
-            <InputGroup
-              value={description}
-              component={
-                <Switch
-                  checked={this.state.is_archived}
-                  onChange={(is_archived) =>
-                    this.setState({ is_archived, settingsChanged: true })
-                  }
-                />
-              }
-              onChange={(e) =>
-                this.setState({ description: Utils.safeParseEventValue(e) })
-              }
-              type='text'
-              title='Archived'
-              tooltip='Archiving a flag allows you to filter out flags from the Flagsmith dashboard that are no longer relevant.<br/>An archived flag will still return as normal in all SDK endpoints.'
-              placeholder="e.g. 'This determines what size the header is' "
-            />
+          <FormGroup className='mb-4 setting'>
+            <Row>
+              <Switch
+                checked={this.state.is_archived}
+                onChange={(is_archived) => {
+                  this.setState({ is_archived, settingsChanged: true })
+                }}
+                className='ml-0'
+              />
+              <Tooltip
+                title={
+                  <label className='cols-sm-2 control-label mb-0 ml-3'>
+                    Archived <Icon name='info-outlined' />
+                  </label>
+                }
+              >
+                Archiving a flag allows you to filter out flags from the
+                Flagsmith dashboard that are no longer relevant.
+                <br />
+                An archived flag will still return as normal in all SDK
+                endpoints.
+              </Tooltip>
+            </Row>
           </FormGroup>
         )}
 
         {!identity && Utils.getFlagsmithHasFeature('hide_flag') && (
-          <FormGroup className='mb-4 mr-3 ml-3'>
-            <Tooltip
-              title={
-                <label className='cols-sm-2 control-label'>
-                  Hide from SDKs{' '}
-                  <span className='icon ion-ios-information-circle' />
-                </label>
-              }
-              place='right'
-            >
-              {Constants.strings.HIDE_FROM_SDKS_DESCRIPTION}
-            </Tooltip>
-            <div>
+          <FormGroup className='mb-4 setting'>
+            <Row>
               <Switch
                 data-test='toggle-feature-button'
                 defaultChecked={hide_from_client}
@@ -573,8 +592,19 @@ const CreateFlag = class extends Component {
                 onChange={(hide_from_client) =>
                   this.setState({ hide_from_client })
                 }
+                className='ml-0'
               />
-            </div>
+              <Tooltip
+                title={
+                  <label className='cols-sm-2 control-label mb-0 ml-3'>
+                    Hide from SDKs <Icon name='info-outlined' />
+                  </label>
+                }
+                place='right'
+              >
+                {Constants.strings.HIDE_FROM_SDKS_DESCRIPTION}
+              </Tooltip>
+            </Row>
           </FormGroup>
         )}
       </>
@@ -583,7 +613,7 @@ const CreateFlag = class extends Component {
     const Value = (error, projectAdmin, createFeature, hideValue) => (
       <>
         {!isEdit && (
-          <FormGroup className='mb-4 mr-3 mt-2 ml-3'>
+          <FormGroup className='mb-4 mt-2'>
             <InputGroup
               ref={(e) => (this.input = e)}
               data-test='featureID'
@@ -624,7 +654,7 @@ const CreateFlag = class extends Component {
         )}
 
         {identity && description && (
-          <FormGroup className='mb-4 mt-2 mr-3 ml-3'>
+          <FormGroup className='mb-4 mt-2 mx-3'>
             <InputGroup
               value={description}
               data-test='featureDesc'
@@ -644,7 +674,11 @@ const CreateFlag = class extends Component {
           </FormGroup>
         )}
         {!hideValue && (
-          <div className={identity && !description ? 'mt-2' : ''}>
+          <div
+            className={`${identity && !description ? 'mt-4 mx-3' : ''} ${
+              identity ? 'mx-3' : ''
+            }`}
+          >
             <Feature
               readOnly={noPermissions}
               hide_from_client={hide_from_client}
@@ -841,47 +875,39 @@ const CreateFlag = class extends Component {
                                     </Row>
                                   }
                                 >
-                                  <FormGroup className='mr-3 ml-3'>
-                                    <Panel
+                                  <FormGroup>
+                                    <Tooltip
                                       title={
-                                        <Tooltip
-                                          title={
-                                            <h6 className='mb-0'>
-                                              Environment Value{' '}
-                                              <span className='icon ion-ios-information-circle' />
-                                            </h6>
-                                          }
-                                          place='top'
-                                        >
-                                          {Constants.strings.ENVIRONMENT_OVERRIDE_DESCRIPTION(
-                                            _.find(project.environments, {
-                                              api_key: this.props.environmentId,
-                                            }).name,
-                                          )}
-                                        </Tooltip>
+                                        <h5 className='mb-4'>
+                                          Environment Value{' '}
+                                          <Icon name='info-outlined' />
+                                        </h5>
                                       }
+                                      place='top'
                                     >
-                                      {Value(
-                                        error,
-                                        projectAdmin,
-                                        createFeature,
+                                      {Constants.strings.ENVIRONMENT_OVERRIDE_DESCRIPTION(
+                                        _.find(project.environments, {
+                                          api_key: this.props.environmentId,
+                                        }).name,
                                       )}
+                                    </Tooltip>
+                                    {Value(error, projectAdmin, createFeature)}
 
-                                      {isEdit && (
-                                        <>
-                                          <JSONReference
-                                            showNamesButton
-                                            title={'Feature'}
-                                            json={projectFlag}
-                                          />
-                                          <JSONReference
-                                            title={'Feature state'}
-                                            json={this.props.environmentFlag}
-                                          />
-                                        </>
-                                      )}
-                                    </Panel>
-                                    <p className='text-right mt-4'>
+                                    {isEdit && (
+                                      <>
+                                        <JSONReference
+                                          showNamesButton
+                                          title={'Feature'}
+                                          json={projectFlag}
+                                        />
+                                        <JSONReference
+                                          title={'Feature state'}
+                                          json={this.props.environmentFlag}
+                                        />
+                                      </>
+                                    )}
+                                    <ModalHR className='mt-4' />
+                                    <div className='text-right mt-4 mb-3 fs-small lh-sm modal-caption'>
                                       {is4Eyes
                                         ? 'This will create a change request for the environment'
                                         : 'This will update the feature value for the environment'}{' '}
@@ -892,7 +918,7 @@ const CreateFlag = class extends Component {
                                           }).name
                                         }
                                       </strong>
-                                    </p>
+                                    </div>
 
                                     <Permission
                                       level='environment'
@@ -915,7 +941,8 @@ const CreateFlag = class extends Component {
                                             {!is4Eyes && (
                                               <>
                                                 {canSchedule ? (
-                                                  <ButtonOutline
+                                                  <Button
+                                                    theme='secondary'
                                                     onClick={() =>
                                                       saveFeatureValue(true)
                                                     }
@@ -937,11 +964,12 @@ const CreateFlag = class extends Component {
                                                       : existingChangeRequest
                                                       ? 'Update Change Request'
                                                       : 'Schedule Update'}
-                                                  </ButtonOutline>
+                                                  </Button>
                                                 ) : (
                                                   <Tooltip
                                                     title={
-                                                      <ButtonOutline
+                                                      <Button
+                                                        theme='outline'
                                                         disabled
                                                         className='mr-2'
                                                         type='button'
@@ -955,7 +983,7 @@ const CreateFlag = class extends Component {
                                                           : existingChangeRequest
                                                           ? 'Update Change Request'
                                                           : 'Schedule Update'}
-                                                      </ButtonOutline>
+                                                      </Button>
                                                     }
                                                   >
                                                     {
@@ -1019,7 +1047,13 @@ const CreateFlag = class extends Component {
                                   <TabItem
                                     data-test='segment_overrides'
                                     tabLabel={
-                                      <Row className='justify-content-center'>
+                                      <Row
+                                        className={`justify-content-center ${
+                                          this.state.segmentsChanged
+                                            ? 'pr-1'
+                                            : ''
+                                        }`}
+                                      >
                                         Segment Overrides{' '}
                                         {this.state.segmentsChanged && (
                                           <div className='unread ml-2 px-2'>
@@ -1030,28 +1064,24 @@ const CreateFlag = class extends Component {
                                     }
                                   >
                                     {!identity && isEdit && (
-                                      <FormGroup className='mb-4 mr-3 ml-3'>
+                                      <FormGroup className='mb-4'>
                                         <div>
-                                          <Panel
-                                            icon='ion-ios-settings'
-                                            title={
-                                              <Tooltip
-                                                title={
-                                                  <h6 className='mb-0'>
-                                                    Segment Overrides{' '}
-                                                    <span className='icon ion-ios-information-circle' />
-                                                  </h6>
-                                                }
-                                                place='right'
-                                              >
-                                                {
-                                                  Constants.strings
-                                                    .SEGMENT_OVERRIDES_DESCRIPTION
-                                                }
-                                              </Tooltip>
-                                            }
-                                            action={
-                                              !this.state.showCreateSegment &&
+                                          <Row className='justify-content-between mb-2 segment-overrides-title'>
+                                            <Tooltip
+                                              title={
+                                                <h5 className='mb-0'>
+                                                  Segment Overrides{' '}
+                                                  <Icon name='info-outlined' />
+                                                </h5>
+                                              }
+                                              place='right'
+                                            >
+                                              {
+                                                Constants.strings
+                                                  .SEGMENT_OVERRIDES_DESCRIPTION
+                                              }
+                                            </Tooltip>
+                                            {!this.state.showCreateSegment &&
                                               !noPermissions && (
                                                 <Button
                                                   onClick={() =>
@@ -1061,59 +1091,57 @@ const CreateFlag = class extends Component {
                                                     )
                                                   }
                                                   type='button'
-                                                  className={`btn--outline${
-                                                    enabledSegment ? '' : '-red'
-                                                  }`}
+                                                  theme='secondary'
+                                                  size='small'
                                                 >
                                                   {enabledSegment
                                                     ? 'Enable All'
                                                     : 'Disable All'}
                                                 </Button>
-                                              )
-                                            }
-                                          >
-                                            {this.props.segmentOverrides ? (
-                                              <SegmentOverrides
-                                                readOnly={noPermissions}
-                                                showEditSegment
-                                                showCreateSegment={
-                                                  this.state.showCreateSegment
-                                                }
-                                                setShowCreateSegment={(
+                                              )}
+                                          </Row>
+                                          {this.props.segmentOverrides ? (
+                                            <SegmentOverrides
+                                              readOnly={noPermissions}
+                                              showEditSegment
+                                              showCreateSegment={
+                                                this.state.showCreateSegment
+                                              }
+                                              setShowCreateSegment={(
+                                                showCreateSegment,
+                                              ) =>
+                                                this.setState({
                                                   showCreateSegment,
-                                                ) =>
-                                                  this.setState({
-                                                    showCreateSegment,
-                                                  })
-                                                }
-                                                feature={projectFlag.id}
-                                                projectId={this.props.projectId}
-                                                multivariateOptions={
-                                                  multivariate_options
-                                                }
-                                                environmentId={
-                                                  this.props.environmentId
-                                                }
-                                                value={
-                                                  this.props.segmentOverrides
-                                                }
-                                                controlValue={initial_value}
-                                                onChange={(v) => {
-                                                  this.setState({
-                                                    segmentsChanged: true,
-                                                  })
-                                                  this.props.updateSegments(v)
-                                                }}
-                                              />
-                                            ) : (
-                                              <div className='text-center'>
-                                                <Loader />
-                                              </div>
-                                            )}
-                                          </Panel>
+                                                })
+                                              }
+                                              feature={projectFlag.id}
+                                              projectId={this.props.projectId}
+                                              multivariateOptions={
+                                                multivariate_options
+                                              }
+                                              environmentId={
+                                                this.props.environmentId
+                                              }
+                                              value={
+                                                this.props.segmentOverrides
+                                              }
+                                              controlValue={initial_value}
+                                              onChange={(v) => {
+                                                this.setState({
+                                                  segmentsChanged: true,
+                                                })
+                                                this.props.updateSegments(v)
+                                              }}
+                                            />
+                                          ) : (
+                                            <div className='text-center'>
+                                              <Loader />
+                                            </div>
+                                          )}
+                                          <ModalHR className='mt-4' />
                                           {!this.state.showCreateSegment && (
                                             <div>
-                                              <p className='text-right mt-4'>
+                                              <p className='text-right mt-4 fs-small lh-sm modal-caption'>
                                                 {is4Eyes &&
                                                 is4EyesSegmentOverrides
                                                   ? 'This will create a change request for the environment'
@@ -1189,16 +1217,21 @@ const CreateFlag = class extends Component {
                                       data-test='identity_overrides'
                                       tabLabel='Identity Overrides'
                                     >
-                                      <FormGroup className='mb-4 mr-3 ml-3'>
+                                      <FormGroup className='mb-4'>
                                         <PanelSearch
                                           id='users-list'
+                                          className='no-pad identity-overrides-title'
                                           title={
                                             <Tooltip
                                               title={
-                                                <h6 className='mb-0'>
+                                                <h5 className='mb-0'>
                                                   Identity Overrides{' '}
-                                                  <span className='icon ion-ios-information-circle' />
-                                                </h6>
+                                                  <Icon
+                                                    name='info-outlined'
+                                                    width={20}
+                                                    fill='#9DA4AE'
+                                                  />
+                                                </h5>
                                               }
                                               place='right'
                                             >
@@ -1216,16 +1249,14 @@ const CreateFlag = class extends Component {
                                                 )
                                               }
                                               type='button'
-                                              className={`btn--outline${
-                                                enabledIndentity ? '' : '-red'
-                                              }`}
+                                              theme='secondary'
+                                              size='small'
                                             >
                                               {enabledIndentity
                                                 ? 'Enable All'
                                                 : 'Disable All'}
                                             </Button>
                                           }
-                                          icon='ion-md-person'
                                           items={this.state.userOverrides}
                                           paging={
                                             this.state.userOverridesPaging
@@ -1292,36 +1323,49 @@ const CreateFlag = class extends Component {
                                                     '_blank',
                                                   )
                                                 }}
+                                                className='font-weight-medium table-column px-3 fs-small lh-sm'
                                               >
                                                 {identity.identifier}
                                               </Flex>
-                                              <Switch
-                                                checked={enabled}
-                                                onChange={() =>
-                                                  this.toggleUserFlag({
-                                                    enabled,
-                                                    id,
-                                                    identity,
-                                                  })
-                                                }
-                                              />
-                                              <div className='ml-2'>
+                                              <div
+                                                className='table-column'
+                                                style={{ width: '65px' }}
+                                              >
+                                                <Switch
+                                                  checked={enabled}
+                                                  onChange={() =>
+                                                    this.toggleUserFlag({
+                                                      enabled,
+                                                      id,
+                                                      identity,
+                                                    })
+                                                  }
+                                                />
+                                              </div>
+                                              <div
+                                                className='table-column'
+                                                style={{ width: '188px' }}
+                                              >
                                                 {feature_state_value && (
                                                   <FeatureValue
                                                     value={feature_state_value}
                                                   />
                                                 )}
                                               </div>
-
-                                              <a
-                                                target='_blank'
-                                                href={`/project/${this.props.projectId}/environment/${this.props.environmentId}/users/${identity.identifier}/${identity.id}?flag=${projectFlag.name}`}
-                                                className='ml-2 btn btn-link btn--link'
-                                                onClick={() => {}}
-                                                rel='noreferrer'
-                                              >
-                                                Edit
-                                              </a>
+                                              <div className='table-column'>
+                                                <Button
+                                                  target='_blank'
+                                                  href={`/project/${this.props.projectId}/environment/${this.props.environmentId}/users/${identity.identifier}/${identity.id}?flag=${projectFlag.name}`}
+                                                  className='btn btn-link fs-small lh-sm fw-normal'
+                                                >
+                                                  <Icon
+                                                    name='edit-outlined'
+                                                    width={20}
+                                                    fill='#6837FC'
+                                                  />{' '}
+                                                  Edit
+                                                </Button>
+                                              </div>
                                             </Row>
                                           )}
                                           renderNoResults={
@@ -1357,32 +1401,24 @@ const CreateFlag = class extends Component {
                                   )}
                                 {!existingChangeRequest &&
                                   !Project.disableAnalytics &&
-                                  Utils.getFlagsmithHasFeature(
-                                    'flag_analytics',
-                                  ) &&
                                   this.props.flagId && (
                                     <TabItem
                                       data-test='analytics'
                                       tabLabel='Analytics'
                                     >
-                                      <FormGroup className='mb-4 mr-3 ml-3'>
-                                        <Panel
-                                          title={
-                                            !!usageData && (
-                                              <h6 className='mb-0'>
-                                                Flag events for last 30 days
-                                              </h6>
-                                            )
-                                          }
-                                        >
-                                          {!usageData && (
-                                            <div className='text-center'>
-                                              <Loader />
-                                            </div>
-                                          )}
+                                      <FormGroup className='mb-4'>
+                                        {!!usageData && (
+                                          <h5 className='mb-2'>
+                                            Flag events for last 30 days
+                                          </h5>
+                                        )}
+                                        {!usageData && (
+                                          <div className='text-center'>
+                                            <Loader />
+                                          </div>
+                                        )}
 
-                                          {this.drawChart(usageData)}
-                                        </Panel>
+                                        {this.drawChart(usageData)}
                                       </FormGroup>
                                     </TabItem>
                                   )}
@@ -1402,21 +1438,21 @@ const CreateFlag = class extends Component {
                                   >
                                     {Settings(projectAdmin, createFeature)}
                                     <JSONReference
-                                      className='mx-4'
+                                      className='mb-3'
                                       showNamesButton
                                       title={'Feature'}
                                       json={projectFlag}
                                     />
-
+                                    <ModalHR className='mt-4' />
                                     {isEdit && (
-                                      <div className='text-right mr-3'>
+                                      <div className='text-right mt-3'>
                                         {createFeature ? (
-                                          <p className='text-right'>
+                                          <p className='text-right modal-caption fs-small lh-sm'>
                                             This will save the above settings{' '}
                                             <strong>all environments</strong>.
                                           </p>
                                         ) : (
-                                          <p className='text-right'>
+                                          <p className='text-right modal-caption fs-small lh-sm'>
                                             To edit this feature's settings, you
                                             will need{' '}
                                             <strong>
@@ -1449,7 +1485,7 @@ const CreateFlag = class extends Component {
                             ) : (
                               <div
                                 className={classNames(
-                                  !isEdit ? 'create-feature-tab' : '',
+                                  !isEdit ? 'create-feature-tab px-3' : '',
                                 )}
                               >
                                 {Value(
@@ -1458,10 +1494,13 @@ const CreateFlag = class extends Component {
                                   createFeature,
                                   project.prevent_flag_defaults,
                                 )}
+                                <ModalHR
+                                  className={`my-4 ${identity ? 'mx-3' : ''}`}
+                                />
                                 {!identity && (
-                                  <div className='text-right mr-3'>
+                                  <div className='text-right mb-3'>
                                     {project.prevent_flag_defaults ? (
-                                      <p className='text-right'>
+                                      <p className='text-right modal-caption fs-small lh-sm'>
                                         This will create the feature for{' '}
                                         <strong>all environments</strong>, you
                                         can edit this feature per environment
@@ -1469,7 +1508,7 @@ const CreateFlag = class extends Component {
                                         environment once the feature is created.
                                       </p>
                                     ) : (
-                                      <p className='text-right'>
+                                      <p className='text-right modal-caption fs-small lh-sm'>
                                         This will create the feature for{' '}
                                         <strong>all environments</strong>, you
                                         can edit this feature per environment
@@ -1498,8 +1537,8 @@ const CreateFlag = class extends Component {
                             {identity && (
                               <div className='pr-3'>
                                 {identity ? (
-                                  <div className='mb-3'>
-                                    <p className='text-left ml-3'>
+                                  <div className='mb-3 mt-4'>
+                                    <p className='text-left ml-3 modal-caption fs-small lh-small'>
                                       This will update the feature value for the
                                       user <strong>{identityName}</strong> in
                                       <strong>
