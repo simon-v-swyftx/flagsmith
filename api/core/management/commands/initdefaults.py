@@ -36,7 +36,7 @@ class Command(BaseCommand):
                 is_superuser=settings.DEFAULT_USER_IS_SUPERUSER,
             )
             self.stdout.write(
-                "Created default user with email %s", settings.DEFAULT_USER_EMAIL
+                "Created default user with email %s" % settings.DEFAULT_USER_EMAIL
             )
 
         if should_create_organisation():
@@ -44,8 +44,8 @@ class Command(BaseCommand):
                 name=settings.DEFAULT_ORGANISATION_NAME
             )
             self.stdout.write(
-                "Created default organisation with name %s",
-                settings.DEFAULT_ORGANISATION_NAME,
+                "Created default organisation with name %s"
+                % settings.DEFAULT_ORGANISATION_NAME,
             )
 
         if organisation and user:
@@ -56,9 +56,8 @@ class Command(BaseCommand):
                 name=settings.DEFAULT_PROJECT_NAME, organisation=organisation
             )
             self.stdout.write(
-                "Created default project with name %s in organisation %s",
-                settings.DEFAULT_PROJECT_NAME,
-                settings.DEFAULT_ORGANISATION_NAME,
+                "Created default project with name %s in organisation %s"
+                % (settings.DEFAULT_PROJECT_NAME, settings.DEFAULT_ORGANISATION_NAME)
             )
 
         if user or organisation or project:
