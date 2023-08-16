@@ -10,16 +10,6 @@ services:
       POSTGRES_DB: flagsmith
     container_name: flagsmith_postgres
 
-  migrator:
-    build:
-      dockerfile: ./Dockerfile
-      context: .
-    environment:
-      DATABASE_URL: postgresql://postgres:password@postgres:5432/flagsmith
-    depends_on:
-      - postgres
-    command: migrate
-
   flagsmith:
     build:
       dockerfile: ./Dockerfile
@@ -52,14 +42,21 @@ services:
       # EMAIL_PORT: 587 # optional
       # EMAIL_USE_TLS: True # optional
 
+      # Initialise the instance with default entities
+      #
+      # DEFAULT_USER_EMAIL: admin@example.com
+      # DEFAULT_USER_PASSWORD: flagsmith
+      # DEFAULT_USER_IS_SUPERUSER: True
+      # DEFAULT_ORGANISATION_NAME: default
+      # DEFAULT_PROJECT_NAME: default
+
     ports:
       - '8000:8000'
     depends_on:
       - postgres
-      - migrator
     links:
       - postgres
-    command: serve
+    command: migrate-and-serve
 
   # Run the asynchronous task processor as a separate container alongside the API.
   # When enabled, the API will write tasks to a queue (in the PostgreSQL database) for
@@ -80,21 +77,3 @@ services:
       - postgres
     links:
       - postgres
-
-  # Use this container to initialise a default user / organisation / project in your installation.
-  # Any of the DEFAULT_* environment variables can be removed to only create certain entities as required.
-  #  init:
-  #    build:
-  #      dockerfile: ./Dockerfile
-  #      context: .
-  #    environment:
-  #      LOG_LEVEL: INFO
-  #      DEFAULT_USER_EMAIL: admin@example.com
-  #      DEFAULT_USER_PASSWORD: flagsmith
-  #      DEFAULT_USER_IS_SUPERUSER: True
-  #      DEFAULT_ORGANISATION_NAME: default
-  #      DEFAULT_PROJECT_NAME: default
-  #      DATABASE_URL: postgresql://postgres:password@postgres:5432/flagsmith
-  #    depends_on:
-  #      - migrator
-  #    command: init-self-hosted

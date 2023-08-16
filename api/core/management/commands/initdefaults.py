@@ -11,11 +11,23 @@ user_model = get_user_model()
 logger = logging.getLogger(__name__)
 
 
+default_settings = (
+    settings.DEFAULT_USER_EMAIL,
+    settings.DEFAULT_USER_PASSWORD,
+    settings.DEFAULT_USER_IS_SUPERUSER,
+    settings.DEFAULT_ORGANISATION_NAME,
+    settings.DEFAULT_PROJECT_NAME,
+)
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         user = None
         organisation = None
         project = None
+
+        if not any(default_settings):
+            self.stdout.write("No environment variables set, not creating defaults.")
 
         if should_create_user():
             user = user_model.objects.create_user(

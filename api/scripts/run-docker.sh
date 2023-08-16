@@ -14,7 +14,9 @@ function serve() {
     export STATSD_PORT=${STATSD_PORT:-8125}
     export STATSD_PREFIX=${STATSD_PREFIX:-flagsmith.api}
 
-    python manage.py waitfordb
+    python manage.py waitfordb --migrations
+
+    python manage.py initdefaults
 
     exec gunicorn --bind 0.0.0.0:8000 \
              --worker-tmp-dir /dev/shm \
@@ -59,10 +61,6 @@ function dump_organisation_to_local_fs(){
 function go_to_sleep(){
     echo "Sleeping for ${1} seconds before startup"
     sleep ${1}
-}
-function init_self_hosted(){
-    python manage.py waitfordb --waitfor 90 --migrations
-    python manage.py initselfhosted
 }
 
 if [ "$1" == "migrate" ]; then
