@@ -22,7 +22,6 @@ import { PermissionLevel } from 'common/types/requests'
 import { RouterChildContext } from 'react-router'
 import { useGetAvailablePermissionsQuery } from 'common/services/useAvailablePermissions'
 import ConfigProvider from 'common/providers/ConfigProvider'
-import ModalHR from './modals/ModalHR'
 import Icon from './Icon'
 
 const OrganisationProvider = require('common/providers/OrganisationProvider')
@@ -198,12 +197,12 @@ const _EditPermissionsModal: FC<EditPermissionModalType> = (props) => {
     </div>
   ) : (
     <div>
-      <div className='modal-body'>
-        <div className='mb-2'>
+      <div className='modal-body px-4'>
+        <div className='mb-2 mt-4'>
           {level !== 'organisation' && (
             <Row>
               <Flex>
-                <strong>Administrator</strong>
+                <h5>Administrator</h5>
                 <div className='list-item-footer faint'>
                   {hasRbacPermission ? (
                     `Full View and Write permissions for the given ${Format.camelCase(
@@ -231,7 +230,7 @@ const _EditPermissionsModal: FC<EditPermissionModalType> = (props) => {
         </div>
         <PanelSearch
           title='Permissions'
-          className='no-pad mb-4'
+          className='no-pad mb-2'
           items={permissions}
           renderRow={(p: AvailablePermission) => {
             const levelUpperCase = level.toUpperCase()
@@ -261,10 +260,10 @@ const _EditPermissionsModal: FC<EditPermissionModalType> = (props) => {
           }}
         />
 
-        <p className='text-right mt-2'>
+        <div className='text-right pt-4 mb-4'>
           This will edit the permissions for{' '}
           <strong>{isGroup ? `the ${name} group` : ` ${name}`}</strong>.
-        </p>
+        </div>
 
         {parentError && (
           <InfoMessage>
@@ -286,8 +285,6 @@ const _EditPermissionsModal: FC<EditPermissionModalType> = (props) => {
           </InfoMessage>
         )}
       </div>
-      <ModalHR />
-
       <div className='modal-footer'>
         <Button className='mr-2' onClick={closeModal} theme='secondary'>
           Cancel
@@ -335,7 +332,7 @@ const EditPermissions: FC<EditPermissionsType> = (props) => {
         user={user}
         push={router.history.push}
       />,
-      'p-0',
+      'p-0 side-modal',
     )
   }
 
@@ -354,7 +351,7 @@ const EditPermissions: FC<EditPermissionsType> = (props) => {
         group={group}
         push={router.history.push}
       />,
-      'p-0',
+      'p-0 side-modal',
     )
   }
 
