@@ -41,3 +41,8 @@ def _create_initial_feature_versions(environment: "Environment"):
         get_environment_flags_queryset(environment=environment).filter(
             identity__isnull=True, feature=feature
         ).update(environment_feature_version=ef_version)
+
+
+@register_task_handler()
+def trigger_update_version_webhooks(environment_feature_version_uuid: str) -> None:
+    pass
